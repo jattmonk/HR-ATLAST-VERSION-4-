@@ -170,7 +170,6 @@
         );
         const GlobeIcon = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10" /><line x1="2" x2="22" y1="12" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></IconWrapper>;
         const Award = (props) => <IconWrapper {...props}><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></IconWrapper>;
-        const MapPin = (props) => <IconWrapper {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></IconWrapper>;
         const ArrowRight = (props) => <IconWrapper {...props}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></IconWrapper>;
         const ArrowLeftRight = (props) => <IconWrapper {...props}><path d="M8 3 4 7l4 4" /><path d="M4 7h16" /><path d="m16 21 4-4-4-4" /><path d="M20 17H4" /></IconWrapper>;
         const Users = (props) => <IconWrapper {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></IconWrapper>;
@@ -705,90 +704,6 @@
             }
         };
 
-        // --- Career Roadmaps for Each Specialization ---
-        const specializationRoadmaps = [
-            {
-                title: "HR Generalist / Business Partner",
-                summary: "Build breadth across hiring, onboarding, payroll, policy and employee relations before moving into strategic partnering.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Start in HR coordinator/assistant roles, master HRIS basics, compliance checklists and onboarding." },
-                    { stage: "Years 2-4", detail: "Earn SHRM-CP/PHRi, take ownership of a client group, and lead a small policy or handbook refresh." },
-                    { stage: "Years 4-7", detail: "Move into HRBP, drive workforce planning, partner with finance, and present people metrics to leadership." }
-                ],
-                certs: ["SHRM-CP/PHRi", "CPHR/CHRL", "SHRM-SCP/SPHR"]
-            },
-            {
-                title: "Talent Acquisition & Employer Brand",
-                summary: "Grow from sourcing excellence to full-stack recruiting and brand ownership.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Master sourcing (Boolean, LinkedIn), candidate experience, and ATS hygiene; earn AIRS/LinkedIn badges." },
-                    { stage: "Years 2-4", detail: "Own requisitions end-to-end, build scorecards, pilot structured interviews, and report funnel metrics." },
-                    { stage: "Years 4-6", detail: "Lead a TA pod, launch an employer brand campaign, and partner with finance on headcount planning." }
-                ],
-                certs: ["AIRS CIR", "LinkedIn Talent Insights", "SHRM Talent Acquisition"]
-            },
-            {
-                title: "Compensation, Benefits & Total Rewards",
-                summary: "Develop pay structures, benefits governance and executive comp literacy.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Run payroll data checks, benchmark roles, and learn Excel/Sheets modeling." },
-                    { stage: "Years 2-4", detail: "Complete WorldatWork modules (CCP/GRP), build salary bands, and audit variable pay plans." },
-                    { stage: "Years 4-7", detail: "Design annual compensation cycles, run market-pricing refreshes, and brief leadership on pay equity risks." }
-                ],
-                certs: ["CCP/GRP", "CBP", "CECP"]
-            },
-            {
-                title: "Learning, OD & Change",
-                summary: "Move from facilitation to org design and change leadership.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Facilitate onboarding or soft-skills sessions, shadow instructional design, and gather feedback data." },
-                    { stage: "Years 2-4", detail: "Earn APTD/CIPD L&D, build learning journeys, and measure completion + NPS." },
-                    { stage: "Years 4-7", detail: "Lead change projects (Prosci/ADKAR), partner with leaders on redesign, and publish ROI stories." }
-                ],
-                certs: ["ATD APTD/CPTD", "CIPD L&D", "Prosci Change"]
-            },
-            {
-                title: "People Analytics / HR Tech",
-                summary: "Grow from reporting to predictive insights and systems ownership.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Build clean HRIS dashboards, learn SQL/Sheets, and automate recurring reports." },
-                    { stage: "Years 2-4", detail: "Earn vendor certs (Workday/SAP/UKG) and launch a people data dictionary with clear definitions." },
-                    { stage: "Years 4-6", detail: "Ship predictive pilots (attrition/quality-of-hire), ensure data governance, and present findings to ELT." }
-                ],
-                certs: ["Workday HCM", "SAP SuccessFactors", "People Analytics Micro-credentials"]
-            },
-            {
-                title: "Employee Relations / Labour Relations",
-                summary: "Progress from case management to proactive labour strategy.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Handle tickets/documentation, learn investigation interviewing, and track issue trends." },
-                    { stage: "Years 2-4", detail: "Earn ER/IR certificates, write manager toolkits, and co-lead a small investigation end-to-end." },
-                    { stage: "Years 4-7", detail: "Own relations strategy for a business unit, brief leadership on risk, and partner with legal on settlements." }
-                ],
-                certs: ["SHRM Employee Relations", "CIPD Employee Relations", "Queen's IRC / Cornell ILR"]
-            },
-            {
-                title: "Diversity, Equity & Inclusion",
-                summary: "Shift from program support to DEI strategy and accountability.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Support ERGs, track participation, and learn inclusive hiring basics." },
-                    { stage: "Years 2-4", detail: "Earn DEI certificates, run bias training with follow-up metrics, and embed inclusion into job design." },
-                    { stage: "Years 4-6", detail: "Set DEI OKRs, publish dashboards, and align leadership incentives to equity outcomes." }
-                ],
-                certs: ["SHRM Inclusive Workplace", "Cornell/Yale DEI", "CCDI/CIPD DEI"]
-            },
-            {
-                title: "Health, Safety & Wellbeing",
-                summary: "Advance from compliance to proactive risk prevention and wellness strategy.",
-                steps: [
-                    { stage: "Years 0-2", detail: "Complete OSHA/NEBOSH basics, perform safety walkthroughs, and document incidents." },
-                    { stage: "Years 2-4", detail: "Build training calendars, partner with facilities on ergonomics, and analyze injury trends." },
-                    { stage: "Years 4-6", detail: "Design a holistic wellbeing program, run drills/audits, and report cost avoidance to leadership." }
-                ],
-                certs: ["OSHA/IOSH", "NEBOSH", "HRCI WHS"]
-            }
-        ];
-
         // --- Bookshelf Data ---
         const booksData = {
             categories: [
@@ -1182,77 +1097,139 @@
         // --- Country Specializations Components ---
         const specializationsData = window.COUNTRY_SPECIALIZATIONS || {};
 
-        const CertificationCard = ({ cert, expanded, onToggle, index, total }) => (
-            <div className="relative pl-6">
-                <div className="absolute left-0 top-1.5 bottom-0 w-0.5 bg-gray-200" aria-hidden="true"></div>
-                <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-gray-900" aria-hidden="true"></div>
+        const CertificationCard = ({ cert, expanded, onToggle }) => {
+            const contentId = `cert-steps-${cert.id}`;
 
-                <div className="glass-card rounded-xl p-4 border border-white/60 shadow-sm">
-                    <div className="flex items-start justify-between gap-3">
-                        <div>
-                            <h5 className="text-lg font-bold text-slate-900 leading-tight">{cert.name}</h5>
-                            <p className="text-sm text-slate-600 mt-1">Level: {cert.level} • Recognition: {cert.recognition}</p>
-                        </div>
-                        <span className="text-[11px] font-semibold uppercase tracking-wide bg-gray-900 text-white px-3 py-1 rounded-full border border-gray-900">{cert.difficulty}</span>
+            return (
+            <div className="glass-card rounded-xl p-5 border border-white/60 shadow-sm">
+                <div className="flex items-start justify-between gap-3">
+                    <div>
+                        <h5 className="text-lg font-bold text-slate-900 leading-tight">{cert.name}</h5>
+                        <p className="text-sm text-slate-600 mt-1">Level: {cert.level} • Recognition: {cert.recognition}</p>
                     </div>
+                    <button
+                        onClick={onToggle}
+                        className="text-xs font-bold text-gray-900 bg-gray-100 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-200 transition inline-flex items-center gap-2"
+                        aria-expanded={expanded}
+                        aria-controls={contentId}
+                    >
+                        {expanded ? 'Hide step by step' : 'Step by step'}
+                        <ChevronDown className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                    </button>
+                </div>
 
-                    <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-gray-700">
-                        <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
-                            <Calendar className="w-4 h-4" /> {cert.duration}
-                        </span>
-                        <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
-                            <BookOpen className="w-4 h-4" /> {cert.costRange}
-                        </span>
-                        <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
-                            <Headphones className="w-4 h-4" /> {cert.careers.length} career tracks
-                        </span>
-                    </div>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-gray-700">
+                    <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
+                        <Calendar className="w-4 h-4" /> {cert.duration}
+                    </span>
+                    <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
+                        <BookOpen className="w-4 h-4" /> {cert.costRange}
+                    </span>
+                    <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
+                        <Headphones className="w-4 h-4" /> {cert.careers.length} career tracks
+                    </span>
+                    <span className="px-3 py-2 rounded-lg bg-gray-900 text-white inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wide">
+                        {cert.difficulty}
+                    </span>
+                </div>
 
-                    <div className="mt-4 flex justify-between items-center">
-                        <div className="text-xs text-gray-500 font-semibold">Roadmap stop {index + 1} of {total}</div>
-                        <button onClick={onToggle} className="text-sm font-bold text-gray-900 bg-gray-100 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-200 transition flex items-center gap-2">
-                            {expanded ? 'Hide playbook' : 'Open playbook'} <ChevronDown className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
-                        </button>
-                    </div>
-
-                    {expanded && (
-                        <div className="mt-4 pt-4 border-t border-gray-100 space-y-4">
-                            <div>
-                                <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">Career paths</p>
-                                <div className="flex flex-wrap gap-2">
-                                    {cert.careers.map((career, idx) => (
-                                        <span key={idx} className="text-xs font-semibold text-gray-800 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">{career}</span>
-                                    ))}
+                <div
+                    id={contentId}
+                    className={`transition-all duration-300 ease-in-out ${expanded ? 'max-h-[2000px] mt-4 opacity-100' : 'max-h-0 opacity-0'} overflow-hidden`}
+                >
+                    <div className="pt-4 border-t border-gray-100 space-y-4">
+                        <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">
+                                <ArrowRight className="w-4 h-4" /> Step by step plan
+                            </div>
+                            <div className="space-y-3">
+                                {cert.researchHighlights?.length > 0 && (
+                                    <div className="bg-white border border-gray-200 rounded-lg p-3">
+                                        <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 mb-2">Research highlights</p>
+                                        <ul className="list-disc list-inside text-sm text-slate-800 space-y-1">
+                                            {cert.researchHighlights.map((note, idx) => (
+                                                <li key={idx}>{note}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                                <div className="relative">
+                                    <div className="absolute left-3 top-2 bottom-4 w-px bg-gray-200" aria-hidden="true"></div>
+                                    <ol className="space-y-3 pl-8">
+                                        {cert.howToPass.map((step, idx) => (
+                                            <li key={idx} className="relative">
+                                                <div className="absolute left-[-32px] top-1 w-3 h-3 rounded-full bg-gray-900 border-2 border-white shadow-sm"></div>
+                                                <p className="text-sm text-slate-800 leading-relaxed">{step}</p>
+                                            </li>
+                                        ))}
+                                    </ol>
                                 </div>
                             </div>
+                        </div>
 
-                            <div>
-                                <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">User insights</p>
+                        <div>
+                            <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">Career paths</p>
+                            <div className="flex flex-wrap gap-2">
+                                {cert.careers.map((career, idx) => (
+                                    <span key={idx} className="text-xs font-semibold text-gray-800 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">{career}</span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                                    <Clock className="w-4 h-4" /> Exam insight
+                                </div>
+                                <p className="text-sm text-slate-700 leading-relaxed">{cert.userInsights[0]}</p>
+                                <button onClick={() => setExamInsightModal({ name: cert.name, feel: cert.userInsights[0], tips: cert.howToPass, country: countryData.name })} className="mt-3 text-xs font-bold text-gray-900 underline inline-flex items-center gap-1">
+                                    See how people pass <ChevronRight className="w-3 h-3" />
+                                </button>
+                            </div>
+
+                            <div className="bg-white border border-gray-200 rounded-xl p-4">
+                                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                                    <Share2 className="w-4 h-4" /> Country fit
+                                </div>
+                                <p className="text-sm text-slate-700 leading-relaxed">{cert.recognition} recognition. Common in {countryData.name} job postings.</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-white border border-gray-200 rounded-xl p-4">
+                                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                                    <FileText className="w-4 h-4" /> User insights
+                                </div>
                                 <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
                                     {cert.userInsights.map((insight, idx) => <li key={idx}>{insight}</li>)}
                                 </ul>
                             </div>
 
                             {cert.costBreakdown && (
-                                <div>
-                                    <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">Cost breakdown</p>
+                                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                                        <Briefcase className="w-4 h-4" /> Cost breakdown
+                                    </div>
                                     <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
                                         {cert.costBreakdown.map((item, idx) => <li key={idx}>{item}</li>)}
                                     </ul>
                                 </div>
                             )}
-
-                            <div>
-                                <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">How to pass</p>
-                                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                                    {cert.howToPass.map((tip, idx) => <li key={idx}>{tip}</li>)}
-                                </ul>
-                            </div>
                         </div>
-                    )}
+
+                        <div className="bg-white border border-gray-200 rounded-xl p-4">
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">
+                                <Lightbulb className="w-4 h-4" /> How to pass
+                            </div>
+                            <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                {cert.howToPass.map((tip, idx) => <li key={idx}>{tip}</li>)}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
+        };
 
         const SpecializationCard = ({ spec, isActive, onSelect, expandedCerts, toggleCert }) => (
             <div className={`rounded-xl border transition-all p-5 bg-white ${isActive ? 'shadow-md border-gray-900/10 ring-1 ring-gray-900/10' : 'border-white/70 hover:border-gray-200 hover:shadow-sm'}`}>
@@ -1265,26 +1242,26 @@
                     <button
                         onClick={() => onSelect(spec.id)}
                         className="text-xs font-bold text-gray-900 bg-gray-100 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-200 transition inline-flex items-center gap-2"
+                        aria-expanded={isActive}
+                        aria-controls={`spec-steps-${spec.id}`}
                     >
-                        {isActive ? 'Hide roadmap' : 'View roadmap'}
+                        {isActive ? 'Hide step by step' : 'Step by step'}
                         <ChevronDown className={`w-4 h-4 transition-transform ${isActive ? 'rotate-180' : ''}`} />
                     </button>
                 </div>
 
                 {isActive && (
-                    <div className="mt-6 space-y-4">
+                    <div id={`spec-steps-${spec.id}`} className="mt-6 space-y-4">
                         <div className="flex items-center gap-2 text-xs font-semibold text-gray-600 uppercase tracking-wide">
-                            <ArrowLeftRight className="w-4 h-4" /> Certification roadmap
+                            <ArrowLeftRight className="w-4 h-4" /> Certification steps
                         </div>
                         <div className="space-y-5">
-                            {spec.certifications.map((cert, idx) => (
+                            {spec.certifications.map((cert) => (
                                 <CertificationCard
                                     key={cert.id}
                                     cert={cert}
                                     expanded={!!expandedCerts[cert.id]}
                                     onToggle={() => toggleCert(cert.id)}
-                                    index={idx}
-                                    total={spec.certifications.length}
                                 />
                             ))}
                         </div>
@@ -1310,13 +1287,13 @@
             };
 
             return (
-                <div id="country-roadmaps" className="mt-14">
+                <div id="country-steps" className="mt-14">
                     <div className="bg-gray-50/80 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-inner">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div>
-                                <p className="text-sm font-semibold uppercase tracking-wide text-gray-500">Specializations & Certification Roadmaps</p>
+                                <p className="text-sm font-semibold uppercase tracking-wide text-gray-500">Specializations & Step-by-Step Guides</p>
                                 <h3 className="text-2xl font-extrabold text-slate-900 mt-1">Explore HR tracks in {data.countryName}</h3>
-                                <p className="text-slate-600 text-sm mt-2">Explore HR specializations, certifications, costs, and career paths in this country.</p>
+                                <p className="text-slate-600 text-sm mt-2">Explore HR specializations, certifications, costs, and step-by-step study paths in this country.</p>
                             </div>
                             <div className="bg-white px-4 py-2 rounded-full border border-gray-200 text-xs font-bold text-gray-700 shadow-sm">Deep dive for {data.countryName}</div>
                         </div>
@@ -1352,35 +1329,25 @@
 
             const [myTimeline, setMyTimeline] = useState([]);
             const [newStepName, setNewStepName] = useState("");
-            const [roadmapModal, setRoadmapModal] = useState(null);
             const [examInsightModal, setExamInsightModal] = useState(null);
 
             const countryData = certificationData[selectedCountry];
             const comparisonData = certificationData[compareCountry];
             const examExperience = examExperienceByCountry[selectedCountry];
 
-            const normalizeText = (text = "") => text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-
-            const openRoadmap = (certName) => {
-                const normalizedCert = normalizeText(certName);
-                const matches = specializationRoadmaps.filter((roadmap) =>
-                    roadmap.certs.some((certTag) => normalizedCert.includes(normalizeText(certTag)))
-                );
-                setRoadmapModal({ certName, roadmaps: matches.length ? matches : specializationRoadmaps });
-            };
-
-            const scrollToRoadmaps = () => {
-                const target = document.getElementById('country-roadmaps');
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            };
 
             const handleAddStep = (e) => {
                 e.preventDefault();
                 if(!newStepName) return;
                 setMyTimeline([...myTimeline, { id: Date.now(), name: newStepName, date: new Date().toISOString().split('T')[0] }]);
                 setNewStepName("");
+            };
+
+            const scrollToSteps = () => {
+                const target = document.getElementById('country-steps');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             };
 
             useEffect(() => {
@@ -1511,14 +1478,14 @@
                                                 <div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center text-lg">🌎</div>
                                                 <div>
                                                     <p className="text-sm font-semibold text-slate-800">Deep dive by country</p>
-                                                    <p className="text-xs text-slate-600">Jump straight to the specialization roadmaps for {countryData.name}.</p>
+                                                    <p className="text-xs text-slate-600">Jump straight to the step-by-step certification guides for {countryData.name}.</p>
                                                 </div>
                                             </div>
                                             <div className="flex flex-wrap gap-2">
                                                 {Object.keys(certificationData).map((key) => (
                                                     <button
                                                         key={key}
-                                                        onClick={() => { setSelectedCountry(key); scrollToRoadmaps(); }}
+                                                        onClick={() => { setSelectedCountry(key); scrollToSteps(); }}
                                                         className={`px-3 py-2 text-xs font-bold rounded-lg border ${selectedCountry === key ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-800 border-gray-200 hover:bg-gray-50'}`}
                                                     >
                                                         {certificationData[key].flag} {certificationData[key].name}
@@ -1528,19 +1495,19 @@
                                         </div>
 
                                         <div className="mb-12">
-                                            <div className="bg-gray-900 text-white rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-lg">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-2xl">🧭</div>
-                                                    <div>
-                                                        <h3 className="text-xl font-bold">Career roadmaps on demand</h3>
-                                                        <p className="text-sm text-gray-200">Tap the "Roadmap" button on any certification below to open the step-by-step path for that track.</p>
+                                                <div className="bg-gray-900 text-white rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-lg">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-2xl">🧭</div>
+                                                        <div>
+                                                            <h3 className="text-xl font-bold">Step-by-step bullets on demand</h3>
+                                                            <p className="text-sm text-gray-200">Use the "Step-by-step" buttons on each certification to reveal connected bullets that guide what to do next.</p>
+                                                        </div>
                                                     </div>
+                                                    <p className="text-xs uppercase tracking-wide font-semibold bg-white text-gray-900 px-4 py-2 rounded-full inline-flex items-center gap-2 shadow-sm">
+                                                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                        Steps view enabled
+                                                    </p>
                                                 </div>
-                                                <p className="text-xs uppercase tracking-wide font-semibold bg-white text-gray-900 px-4 py-2 rounded-full inline-flex items-center gap-2 shadow-sm">
-                                                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                                    Lean view enabled
-                                                </p>
-                                            </div>
                                         </div>
 
                                         <div className="space-y-12">
@@ -1564,11 +1531,8 @@
                                                                             <TiltCard key={ctIdx} className="glass-card p-5 rounded-lg">
                                                                                 <h5 className="font-bold text-slate-800">{cert.name}</h5>
                                                                                 <p className="text-sm text-slate-600 mb-4 mt-1">{cert.desc}</p>
-                                                                                <div className="flex flex-wrap gap-2">
-                                                                                    <button onClick={() => openRoadmap(cert.name)} className="text-white text-xs font-bold bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-800 transition flex items-center gap-2">
-                                                                                        <MapPin className="w-4 h-4" /> Roadmap
-                                                                                    </button>
-                                                                                    <button className="text-gray-900 text-xs font-bold bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition">Learn More</button>
+                                                                                <div className="text-xs font-semibold text-gray-800 bg-gray-100 px-4 py-2 rounded-lg inline-flex items-center gap-2 border border-gray-200">
+                                                                                    <ArrowRight className="w-4 h-4" /> Use the step-by-step buttons below for guidance
                                                                                 </div>
                                                                             </TiltCard>
                                                                         ))}
@@ -1902,45 +1866,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                )}
-
-                                {/* Modal Overlays */}
-                                {roadmapModal && (
-                                    <Modal
-                                        title={`${roadmapModal.certName} career roadmap`}
-                                        onClose={() => setRoadmapModal(null)}
-                                    >
-                                        <p className="text-sm text-slate-600 mb-4">We matched this certification to the most relevant roadmaps. Follow the steps to plan your path.</p>
-                                        <div className="space-y-5">
-                                            {roadmapModal.roadmaps.map((roadmap, idx) => (
-                                                <div key={idx} className="border border-slate-200 rounded-xl p-5 bg-gray-50/60">
-                                                    <div className="flex items-start justify-between gap-3 mb-3">
-                                                        <div>
-                                                            <h4 className="text-lg font-bold text-slate-900 leading-tight">{roadmap.title}</h4>
-                                                            <p className="text-sm text-slate-600">{roadmap.summary}</p>
-                                                        </div>
-                                                        <span className="text-[11px] font-semibold uppercase tracking-wide bg-gray-900 text-white px-3 py-1 rounded-full">Roadmap</span>
-                                                    </div>
-                                                    <ol className="space-y-3 text-sm text-slate-700 mb-3">
-                                                        {roadmap.steps.map((step, sIdx) => (
-                                                            <li key={sIdx} className="flex gap-3">
-                                                                <div className="mt-1 w-2 h-2 rounded-full bg-gray-900 flex-shrink-0"></div>
-                                                                <div>
-                                                                    <p className="font-semibold text-slate-900">{step.stage}</p>
-                                                                    <p className="leading-snug">{step.detail}</p>
-                                                                </div>
-                                                            </li>
-                                                        ))}
-                                                    </ol>
-                                                    <div className="flex flex-wrap gap-2 pt-1">
-                                                        {roadmap.certs.map((cert, cIdx) => (
-                                                            <span key={cIdx} className="text-[11px] font-semibold bg-white text-gray-800 px-3 py-1 rounded-full border border-gray-200">{cert}</span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </Modal>
                                 )}
 
                                 {examInsightModal && (

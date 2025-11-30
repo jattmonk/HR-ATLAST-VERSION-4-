@@ -23,6 +23,10 @@ const COUNTRY_SPECIALIZATIONS = {
               "Behavioral scenario items feel tricky without practicing the HR competency model.",
               "Test-takers say 6–8 weeks of steady study works if you already work in HR."
             ],
+            researchHighlights: [
+              "SHRM-CP is a 134-question exam (80 scored, 54 field test) with a 2h45 time limit focused on behavioural competencies.",
+              "Eligibility blends HR experience and education, and holders must earn 60 PDCs every three years to recertify."
+            ],
             costBreakdown: ["Exam: $375–$475", "Membership: ~$110", "Study tools: $100–$300"],
             howToPass: [
               "Budget 5–7 study hours per week and use SHRM's competency blueprints.",
@@ -42,6 +46,10 @@ const COUNTRY_SPECIALIZATIONS = {
             userInsights: [
               "Strategy and risk scenarios drive most of the difficulty.",
               "People report mock exams are essential to calibrate pacing."
+            ],
+            researchHighlights: [
+              "The SPHR exam has 140 questions (115 scored) over 2h30 and weights leadership and strategy as the largest blueprint domain.",
+              "HRCI requires senior HR experience to sit the exam and 60 recertification credits (15 business) every three years."
             ],
             costBreakdown: ["Exam: $495–$595", "Prep course: $300–$800", "Books: $80–$150"],
             howToPass: [
@@ -68,7 +76,11 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["Compensation Analyst", "Total Rewards Manager", "Comp & Benefits Lead"],
             userInsights: [
               "Analytics-heavy modules take the most time.",
-              "Stack courses slowly to avoid burnout." 
+              "Stack courses slowly to avoid burnout."
+            ],
+            researchHighlights: [
+              "WorldatWork's CECP requires completing three executive compensation courses/exams that cover incentives, equity, and governance.",
+              "Coursework leans on SEC-style disclosure practices and pay-for-performance design across private and public firms."
             ],
             costBreakdown: ["Courses: ~$700 each", "Exam fees: ~$400", "Materials: ~$150"],
             howToPass: [
@@ -100,7 +112,11 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["HR Coordinator", "HR Generalist", "HR Advisor"],
             userInsights: [
               "Legislation and case law are the toughest sections.",
-              "Most candidates study while working full-time across 2–3 terms." 
+              "Most candidates study while working full-time across 2–3 terms."
+            ],
+            researchHighlights: [
+              "The CPHR National Knowledge Exam is 160 multiple-choice questions over 3 hours across nine competency areas.",
+              "Designation requires accredited coursework or equivalency and roughly three years of professional-level HR experience."
             ],
             costBreakdown: ["Exam: ~$500", "Membership: $300–$450", "Prep course: $600–$1,200"],
             howToPass: [
@@ -120,7 +136,11 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["HR Manager", "People Partner", "HR Consultant"],
             userInsights: [
               "Competency interview requires concise STAR answers.",
-              "Accounting/finance modules surprise many candidates." 
+              "Accounting/finance modules surprise many candidates."
+            ],
+            researchHighlights: [
+              "The CHRL Knowledge Exam is a ~175-question multiple-choice test (3.5 hours) based on the HRPA competency framework.",
+              "Candidates must complete nine approved HR courses and a professional experience assessment to finalize the CHRL."
             ],
             costBreakdown: ["Exam: ~$400", "Assessment: ~$500", "Courses: $600–$1,000"],
             howToPass: [
@@ -147,13 +167,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["Payroll Coordinator", "Payroll Specialist", "HRIS Analyst"],
             userInsights: [
               "CPP/EI calculations trip up many new students.",
-              "Weekly practice on T4/T4A forms builds speed." 
+              "Weekly practice on T4/T4A forms builds speed."
+            ],
+            researchHighlights: [
+              "PCP requires completing Payroll Compliance Legislation plus Payroll Fundamentals 1 & 2 before writing the national exam.",
+              "The National Payroll Institute also requires one year of weighted payroll experience within five years to certify."
             ],
             costBreakdown: ["Courses: ~$300 each", "Membership: ~$300", "Exam: ~$400"],
             howToPass: [
               "Work through paycheck scenarios for multiple provinces.",
               "Memorize key CRA filing deadlines.",
-              "Review reconciliation steps monthly." 
+              "Review reconciliation steps monthly."
             ]
           }
         ]
@@ -179,13 +203,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["People Advisor", "HR Officer", "People Partner"],
             userInsights: [
               "Assignments require real workplace evidence—plan ahead.",
-              "Study centers vary; tutor feedback quality matters." 
+              "Study centers vary; tutor feedback quality matters."
+            ],
+            researchHighlights: [
+              "CIPD Level 5 is assessed through written assignments and workplace evidence rather than a final exam, typically over 9–12 months part time.",
+              "Enrollment includes CIPD membership and leads to Associate status once all units are passed."
             ],
             costBreakdown: ["Tuition: £2k–£3k", "Membership: ~£180/year", "Workshops: optional £200"],
             howToPass: [
               "Align each assignment with a live project at work.",
               "Create a glossary for UK employment law references.",
-              "Book tutorials early to get feedback loops." 
+              "Book tutorials early to get feedback loops."
             ]
           },
           {
@@ -199,13 +227,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["Senior People Partner", "HR Manager", "Head of People"],
             userInsights: [
               "Strategic modules require longer reflective essays.",
-              "Learners recommend spacing submissions to avoid overlap." 
+              "Learners recommend spacing submissions to avoid overlap."
+            ],
+            researchHighlights: [
+              "The Level 7 Advanced Diploma is CIPD's master's-level route with research-led assignments and case analyses, often spanning 12–18 months.",
+              "Graduates can pursue Chartered Member or Fellow upgrades after meeting the professional impact and evidence criteria."
             ],
             costBreakdown: ["Tuition: £4k–£7k", "Membership: ~£260/year", "Workbooks: ~£150"],
             howToPass: [
               "Draft outlines for each assignment before writing.",
               "Use CIPD Profession Map language in evidence.",
-              "Cite case law and ACAS guidance where relevant." 
+              "Cite case law and ACAS guidance where relevant."
             ]
           }
         ]
@@ -226,13 +258,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["Payroll Specialist", "Reward Analyst", "Payroll Manager"],
             userInsights: [
               "Real-time PAYE reporting and pensions cause most errors.",
-              "Mock assignments mirror live payroll cycles." 
+              "Mock assignments mirror live payroll cycles."
+            ],
+            researchHighlights: [
+              "CIPP payroll diplomas align to UK apprenticeship standards with assignments and exams on RTI, auto-enrolment, and statutory leave rules.",
+              "Learners typically need access to workplace payroll data to evidence competence for the portfolio elements."
             ],
             costBreakdown: ["Tuition: £1.5k–£2.5k", "Membership: ~£200", "Exam: included"],
             howToPass: [
               "Practice monthly payroll runs with sample data.",
               "Review HMRC updates each term.",
-              "Create checklists for onboarding and leavers." 
+              "Create checklists for onboarding and leavers."
             ]
           }
         ]
@@ -258,13 +294,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["People Advisor", "HR Generalist", "Business Partner"],
             userInsights: [
               "Workplace application tasks are key scoring areas.",
-              "Learners suggest mapping modules to the AHRI Model of Excellence." 
+              "Learners suggest mapping modules to the AHRI Model of Excellence."
+            ],
+            researchHighlights: [
+              "AHRI's accreditation requires online workshops plus a capstone Demonstration of Applied Skills report aligned to the Model of Excellence.",
+              "Certification usually expects a relevant degree or equivalent plus four years HR experience for full CPHR status."
             ],
             costBreakdown: ["Program: ~$3k", "Membership: ~$400", "Workshops: ~$250"],
             howToPass: [
               "Schedule time to interpret modern awards each week.",
               "Build a NES quick-reference sheet for leave and entitlements.",
-              "Complete peer reviews to sharpen reflective tasks." 
+              "Complete peer reviews to sharpen reflective tasks."
             ]
           }
         ]
@@ -285,13 +325,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["WHS Coordinator", "Safety Advisor", "HSE Officer"],
             userInsights: [
               "Most effort goes into the practical risk assessment tasks.",
-              "Students advise collecting workplace evidence early." 
+              "Students advise collecting workplace evidence early."
+            ],
+            researchHighlights: [
+              "WHS Certificate IV is a nationally recognised qualification with around 10 units covering risk management, incident response, and consultation.",
+              "Registered Training Organisations require demonstrated workplace application through logbooks and practical assessments."
             ],
             costBreakdown: ["Tuition: ~$1.5k", "PPE/resources: ~$150", "Assessment fees: included"],
             howToPass: [
               "Shadow a safety walk-through to ground theory.",
               "Map hazards to control measures using the hierarchy of controls.",
-              "Practice incident report writing with clear timelines." 
+              "Practice incident report writing with clear timelines."
             ]
           }
         ]
@@ -317,13 +361,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["HR Executive", "HR Generalist", "People Partner"],
             userInsights: [
               "Scenario-style items are similar to US but with local examples.",
-              "Weekend study groups help maintain pace while working." 
+              "Weekend study groups help maintain pace while working."
+            ],
+            researchHighlights: [
+              "The SHRM-CP exam delivers the same 134-question blueprint globally and can be remote-proctored in India.",
+              "Recertification requires 60 PDCs every three years through SHRM learning activities or continuing education."
             ],
             costBreakdown: ["Exam: ₹25k–₹35k", "Membership: ~₹7k", "Prep course: ₹10k–₹15k"],
             howToPass: [
               "Pair SHRM practice tests with India-specific case reading.",
               "Review labour codes and PF/ESI basics weekly.",
-              "Simulate full-length mock exams for timing." 
+              "Simulate full-length mock exams for timing."
             ]
           },
           {
@@ -337,13 +385,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["HR Assistant", "HR Coordinator", "HR Operations"],
             userInsights: [
               "Caselets are short and practical—focus on application.",
-              "Networking events often provide study tips." 
+              "Networking events often provide study tips."
+            ],
+            researchHighlights: [
+              "NHRDN HRM certificates typically blend MCQs with caselets across HR operations, IR, and OD per the NHRDN competency model.",
+              "Many cohorts include weekend workshops and mentor feedback sessions to review assignments."
             ],
             costBreakdown: ["Program: ₹12k–₹18k", "Workshops: ₹3k–₹5k", "Materials: ₹2k"],
             howToPass: [
               "Summarize each module into a one-page cheat sheet.",
               "Discuss employment law updates with peers monthly.",
-              "Complete all caselets under time limits." 
+              "Complete all caselets under time limits."
             ]
           }
         ]
@@ -364,13 +416,17 @@ const COUNTRY_SPECIALIZATIONS = {
             careers: ["Talent Sourcer", "Recruiter", "TA Lead"],
             userInsights: [
               "Hands-on sourcing labs are the fastest way to progress.",
-              "Metrics and funnel math appear in quizzes." 
+              "Metrics and funnel math appear in quizzes."
+            ],
+            researchHighlights: [
+              "ATAP credentials map to AIRS sourcing curricula and test boolean logic, outreach sequencing, and diversity sourcing tactics.",
+              "Badges often need renewal within two years via continuing education credits or a retake to stay active."
             ],
             costBreakdown: ["Course: ₹20k–₹30k", "Tools: optional ₹3k", "Exam: included"],
             howToPass: [
               "Practice boolean searches weekly with real requisitions.",
               "Build a mini employer brand plan as your capstone.",
-              "Track your own funnel metrics to explain ROI." 
+              "Track your own funnel metrics to explain ROI."
             ]
           }
         ]
@@ -398,6 +454,10 @@ const COUNTRY_SPECIALIZATIONS = {
               "Free zones vs. mainland rules trip up many first-time candidates—keep a comparison chart handy.",
               "Mock case studies on terminations and gratuity calculations are the best prep."
             ],
+            researchHighlights: [
+              "Courses center on UAE Labour Law Federal Decree No.33/2021 plus free-zone nuances, with assessments on contracts, termination, and leave.",
+              "Short-format programs usually include gratuity calculation drills and MOHRE-aligned document templates."
+            ],
             costBreakdown: ["Tuition: AED 2.5k–AED 4k", "Study guides: ~AED 300", "Workshops: optional AED 500"],
             howToPass: [
               "Practice gratuity math under tight timing.",
@@ -417,6 +477,10 @@ const COUNTRY_SPECIALIZATIONS = {
             userInsights: [
               "Assignments need evidence from your Dubai workplace—gather policies and metrics early.",
               "Tutors expect links to both CIPD and UAE labour standards."
+            ],
+            researchHighlights: [
+              "UAE delivery of CIPD Level 5 mirrors UK standards but requires assignments to reference local labour law and regional practices.",
+              "Completion grants CIPD Associate membership that Gulf employers recognise for HRBP roles."
             ],
             costBreakdown: ["Tuition: AED 12k–AED 18k", "Membership: ~AED 800", "Workshops: AED 500"],
             howToPass: [
@@ -445,6 +509,10 @@ const COUNTRY_SPECIALIZATIONS = {
               "Currency fluctuations and housing allowances are common scenario questions.",
               "Candidates recommend memorizing gratuity breakpoints for limited vs. unlimited contracts."
             ],
+            researchHighlights: [
+              "Curricula focus on end-of-service formulas across GCC states, WPS file formats, and allowance-heavy payroll structures.",
+              "Programs often simulate multi-currency payrolls with housing, transport, and schooling allowances to mirror expat packages."
+            ],
             costBreakdown: ["Course: AED 3k–AED 5k", "Practice exams: ~AED 400", "Workshops: AED 600"],
             howToPass: [
               "Drill end-of-service benefit calculations weekly.",
@@ -458,5 +526,7 @@ const COUNTRY_SPECIALIZATIONS = {
   }
 };
 
-// Expose globally for the inline Babel app
-window.COUNTRY_SPECIALIZATIONS = COUNTRY_SPECIALIZATIONS;
+// Expose globally so the inline React app can safely read the data
+if (typeof window !== "undefined") {
+  window.COUNTRY_SPECIALIZATIONS = COUNTRY_SPECIALIZATIONS;
+}
