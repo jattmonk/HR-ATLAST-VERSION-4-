@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalHRCreds - Certification Guide</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6; /* Cool Gray 100 */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            color: #111827; /* Gray 900 */
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9ca3af; /* Gray 400 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* Gray 500 */
+        }
+
+        /* Glassmorphism Utilities - Neutralized */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(229, 231, 235, 0.6); /* Gray 200 */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+            transform-style: preserve-3d;
+        }
+
+        /* Intro Animation Styles */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #111111;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(1.1);
+        }
+
+        .intro-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: white;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        
+        .intro-content button {
+            pointer-events: auto;
+        }
+        
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .awwwards-title {
+            font-size: 4rem;
+            line-height: 1;
+            letter-spacing: -0.03em;
+            background: linear-gradient(to bottom right, #ffffff 0%, #9ca3af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        @media (min-width: 768px) {
+            .awwwards-title { font-size: 7rem; }
+        }
+
+        .dashboard-title {
+            letter-spacing: -0.04em;
+            background: linear-gradient(135deg, #111827 0%, #4b5563 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .awwwards-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+        
+        .awwwards-btn:hover {
+            background: white;
+            color: black;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-bg {
+            background-color: #18181b; /* Zinc 900 */
+            background-image: linear-gradient(135deg, #09090b 0%, #27272a 100%);
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel" src="./specializationsData.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- Icons (Neutralized Colors) ---
+        const IconWrapper = ({ children, className = "", ...props }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>{children}</svg>
+        );
+        const GlobeIcon = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10" /><line x1="2" x2="22" y1="12" y2="12" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></IconWrapper>;
+        const Award = (props) => <IconWrapper {...props}><circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" /></IconWrapper>;
+        const MapPin = (props) => <IconWrapper {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></IconWrapper>;
+        const ArrowRight = (props) => <IconWrapper {...props}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></IconWrapper>;
+        const ArrowLeftRight = (props) => <IconWrapper {...props}><path d="M8 3 4 7l4 4" /><path d="M4 7h16" /><path d="m16 21 4-4-4-4" /><path d="M20 17H4" /></IconWrapper>;
+        const Users = (props) => <IconWrapper {...props}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></IconWrapper>;
+        const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></IconWrapper>;
+        const X = (props) => <IconWrapper {...props}><path d="M18 6 6 18" /><path d="m6 6 12 12" /></IconWrapper>;
+        const Scale = (props) => <IconWrapper {...props}><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" /><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" /><path d="M7 21h10" /><path d="M12 3v18" /><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" /></IconWrapper>;
+        const Clock = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></IconWrapper>;
+        const Share2 = (props) => <IconWrapper {...props}><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="10.49" /></IconWrapper>;
+        const Plus = (props) => <IconWrapper {...props}><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></IconWrapper>;
+        const Calendar = (props) => <IconWrapper {...props}><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" /></IconWrapper>;
+        const Briefcase = (props) => <IconWrapper {...props}><rect width="20" height="14" x="2" y="7" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></IconWrapper>;
+        const ChevronDown = (props) => <IconWrapper {...props}><path d="m6 9 6 6 6-6" /></IconWrapper>;
+        const ChevronRight = (props) => <IconWrapper {...props}><path d="m9 18 6-6-6-6" /></IconWrapper>;
+        const BookOpen = (props) => <IconWrapper {...props}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" /></IconWrapper>;
+        const Headphones = (props) => <IconWrapper {...props}><path d="M3 18v-6a9 9 0 0 1 18 0v6" /><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" /></IconWrapper>;
+        const GraduationCap = (props) => <IconWrapper {...props}><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></IconWrapper>;
+        const FileText = (props) => <IconWrapper {...props}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" /><polyline points="14 2 14 8 20 8" /></IconWrapper>;
+        const Lightbulb = (props) => <IconWrapper {...props}><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-1 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></IconWrapper>;
+        const Library = (props) => <IconWrapper {...props}><path d="m16 6 4 14" /><path d="M12 6v14" /><path d="M8 8v12" /><path d="M4 4v16" /></IconWrapper>;
+
+        // --- Reusable Particle Background Component ---
+        const ParticleBackground = ({ isDark = true }) => {
+            const canvasRef = useRef(null);
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                const particleCount = window.innerWidth < 768 ? 30 : 60;
+                let particles = [];
+
+                const resize = () => {
+                    if(canvas.parentElement) {
+                        width = canvas.width = canvas.parentElement.offsetWidth;
+                        height = canvas.height = canvas.parentElement.offsetHeight;
+                    }
+                };
+                window.addEventListener('resize', resize);
+                resize();
+
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.vx = (Math.random() - 0.5) * 0.3;
+                        this.vy = (Math.random() - 0.5) * 0.3;
+                        this.size = Math.random() * 2 + 1;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+                }
+
+                for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+                let animationFrameId;
+                const animate = () => {
+                    ctx.clearRect(0, 0, width, height);
+                    particles.forEach(particle => {
+                        particle.update();
+                        ctx.beginPath();
+                        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                        ctx.fillStyle = isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.1)';
+                        ctx.fill();
+                    });
+
+                    ctx.lineWidth = 0.5;
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const distance = Math.sqrt(dx * dx + dy * dy);
+                            if (distance < 120) {
+                                const opacity = 1 - (distance / 120);
+                                ctx.strokeStyle = isDark ? `rgba(255, 255, 255, ${opacity * 0.2})` : `rgba(0, 0, 0, ${opacity * 0.05})`;
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                    animationFrameId = requestAnimationFrame(animate);
+                };
+                animate();
+                return () => {
+                    window.removeEventListener('resize', resize);
+                    cancelAnimationFrame(animationFrameId);
+                };
+            }, [isDark]);
+            return <canvas ref={canvasRef} className="absolute top-0 left-0 w-full h-full pointer-events-none" />;
+        };
+
+        // --- 3D TILT CARD COMPONENT ---
+        const TiltCard = ({ children, className = "" }) => {
+            const cardRef = useRef(null);
+            const handleMouseMove = (e) => {
+                if (!cardRef.current) return;
+                const card = cardRef.current;
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                // Calculate tilt degree
+                const rotateX = ((y - centerY) / centerY) * -8; // Max tilt 8deg
+                const rotateY = ((x - centerX) / centerX) * 8;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+            };
+            const handleMouseLeave = () => {
+                if (!cardRef.current) return;
+                cardRef.current.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+            };
+
+            return (
+                <div
+                    ref={cardRef}
+                    className={`transition-transform duration-200 ease-out ${className}`}
+                    onMouseMove={handleMouseMove}
+                    onMouseLeave={handleMouseLeave}
+                >
+                    {children}
+                </div>
+            );
+        };
+
+        // --- Reusable Modal ---
+        const Modal = ({ title, onClose, children }) => (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                <div className="absolute inset-0 bg-black/60" onClick={onClose}></div>
+                <div className="relative bg-white rounded-2xl shadow-2xl max-w-3xl w-full p-6 md:p-8 overflow-y-auto max-h-[85vh] border border-gray-100">
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                        <div>
+                            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Detail view</p>
+                            <h3 className="text-2xl font-extrabold text-slate-900 leading-tight">{title}</h3>
+                        </div>
+                        <button onClick={onClose} className="text-slate-500 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-full p-2 transition" aria-label="Close dialog">
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+                    {children}
+                </div>
+            </div>
+        );
+
+        // --- Intro Component ---
+        const IntroScreen = ({ onComplete }) => {
+             const canvasRef = useRef(null);
+            const mouseRef = useRef({ x: 0, y: 0 });
+            const [stage, setStage] = useState(0);
+            const requestRef = useRef();
+
+            const handleExploreClick = () => {
+                setStage(2); 
+                setTimeout(() => { onComplete(); }, 1000);
+            };
+            
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const ctx = canvas.getContext('2d');
+                let width, height;
+                const particleCount = 100;
+                const globeRadius = 200;
+                let particles = [];
+
+                const resize = () => { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; };
+                const handleMouseMove = (e) => { 
+                    const rect = canvas.getBoundingClientRect(); 
+                    mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }; 
+                };
+                window.addEventListener('resize', resize);
+                window.addEventListener('mousemove', handleMouseMove);
+                resize();
+
+                class Particle {
+                    constructor(isGlobe = false) {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() * height;
+                        this.globeTarget = { x: 0, y: 0, z: 0 };
+                        this.size = Math.random() * 2 + 1;
+                        
+                        if (isGlobe) {
+                            const theta = Math.random() * 2 * Math.PI;
+                            const phi = Math.acos((Math.random() * 2) - 1);
+                            this.globeTarget = {
+                                x: globeRadius * Math.sin(phi) * Math.cos(theta),
+                                y: globeRadius * Math.sin(phi) * Math.sin(theta),
+                                z: globeRadius * Math.cos(phi)
+                            };
+                        }
+                        this.vx = (Math.random() - 0.5) * 0.5;
+                        this.vy = (Math.random() - 0.5) * 0.5;
+                    }
+                    update() {
+                        this.x += this.vx;
+                        this.y += this.vy;
+                        if (this.x < 0 || this.x > width) this.vx *= -1;
+                        if (this.y < 0 || this.y > height) this.vy *= -1;
+                    }
+                }
+
+                if (stage === 0) {
+                    for (let i = 0; i < 60; i++) particles.push(new Particle(false));
+                } else if (stage === 1 || stage === 2) {
+                     for (let i = 0; i < 350; i++) particles.push(new Particle(true));
+                }
+
+                let rotation = 0;
+                const animate = () => {
+                    ctx.clearRect(0, 0, width, height);
+                    
+                    if (stage === 0) {
+                         particles.forEach(p => {
+                             p.update();
+                             ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fillStyle = 'white'; ctx.fill();
+                         });
+                         ctx.lineWidth = 0.3;
+                         for(let i=0; i<particles.length; i++) {
+                             for(let j=i+1; j<particles.length; j++) {
+                                 const dx = particles[i].x - particles[j].x;
+                                 const dy = particles[i].y - particles[j].y;
+                                 const dist = Math.sqrt(dx*dx+dy*dy);
+                                 if(dist < 150) {
+                                     ctx.strokeStyle = `rgba(255,255,255,${1 - dist/150})`;
+                                     ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                                 }
+                             }
+                         }
+                    } else {
+                        rotation += 0.003;
+                        const cx = width / 2; const cy = height / 2;
+                        particles.forEach(p => {
+                             const x3d = p.globeTarget.x * Math.cos(rotation) - p.globeTarget.z * Math.sin(rotation);
+                             const z3d = p.globeTarget.z * Math.cos(rotation) + p.globeTarget.x * Math.sin(rotation);
+                             const y3d = p.globeTarget.y;
+                             const scale = 800 / (800 + z3d);
+                             p.x = cx + x3d * scale; p.y = cy + y3d * scale; p.scale = scale;
+                             
+                             const alpha = (z3d + globeRadius) / (2 * globeRadius);
+                             ctx.beginPath(); ctx.arc(p.x, p.y, p.size * scale, 0, Math.PI*2); 
+                             ctx.fillStyle = `rgba(255,255,255,${alpha})`; ctx.fill();
+                        });
+                    }
+                    requestRef.current = requestAnimationFrame(animate);
+                };
+                animate();
+                return () => cancelAnimationFrame(requestRef.current);
+            }, [stage]);
+
+            return (
+                <div className={`intro-overlay ${stage === 2 ? 'fade-out' : ''}`}>
+                    <canvas ref={canvasRef} />
+                    {stage === 0 && (
+                        <div className="intro-content px-4 animate-fade-in">
+                            <div className="mb-12">
+                                <p className="text-xs md:text-sm text-gray-400 tracking-[0.3em] uppercase mb-4 font-medium">The Professional Network</p>
+                                <h1 className="awwwards-title mb-6">Global<br/>HRCreds</h1>
+                                <p className="text-lg md:text-xl text-gray-400 font-light max-w-md mx-auto leading-relaxed">A data-driven ecosystem for talent mobility and certification strategy.</p>
+                            </div>
+                            <button onClick={() => setStage(1)} className="awwwards-btn px-12 py-5 rounded-full text-sm font-bold tracking-widest uppercase">Enter Experience</button>
+                        </div>
+                    )}
+                    {stage === 1 && (
+                        <div className="intro-content px-4 globe-text-container absolute w-full flex flex-col items-center justify-center h-full pointer-events-none">
+                            <div className="backdrop-blur-md bg-black/30 p-10 rounded-3xl border border-white/10 max-w-3xl shadow-2xl pointer-events-auto">
+                                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white leading-tight">Connecting all the HR knowledge around the world at one place.</h2>
+                                <div className="h-px w-24 bg-gray-500 mx-auto mb-6"></div>
+                                <p className="text-lg md:text-xl text-gray-300 font-light leading-relaxed mb-10">Connecting HR around the world to be more <span className="text-white font-semibold">educated</span> and <span className="text-white font-semibold">credible</span>.</p>
+                                <button onClick={handleExploreClick} className="awwwards-btn px-10 py-4 rounded-full text-sm font-bold tracking-widest uppercase flex items-center gap-3 mx-auto hover:bg-white hover:text-black transition-colors">Explore the Atlas <ArrowRight className="w-4 h-4" /></button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // --- Global Certs Data ---
+        const globalCerts = [
+            {
+                title: "1. HR Generalist / Core HR",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "SHRM-CP / SHRM-SCP", desc: "Global standard competency exams"}, {name: "PHR / SPHR (HRCI)", desc: "Technical HR knowledge & laws"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "CHRP", desc: "Certified Human Resources Professional"}, {name: "CHRL", desc: "Certified Human Resources Leader"}, {name: "CPHR", desc: "Chartered Professional in HR"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD Level 3", desc: "Foundation Certificate"}, {name: "CIPD Level 5", desc: "Associate Diploma"}, {name: "CIPD Level 7", desc: "Advanced Diploma"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "AHRI Practising Certification", desc: "MAHRI, CAHRI, FAHRI pathways"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "SHRM-CP / SCP", desc: "Globally recognized"}, {name: "HRCI PHRi / SPHRi", desc: "International HR credential"}, {name: "NHRDN Courses", desc: "National HRD Network programs"}, {name: "XLRI HR Certifications", desc: "Premier institute certifications"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "CIPD L5/L7 (UAE)", desc: "Delivered locally in Dubai"}, {name: "UAE Labour Law", desc: "MOHRE-aligned certificates"}] }
+                ]
+            },
+            {
+                title: "2. Recruitment & Talent Acquisition",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "AIRS CIR", desc: "Certified Internet Recruiter"}, {name: "LinkedIn Talent Solutions", desc: "Platform certification"}, {name: "SHRM Talent Acquisition", desc: "Specialty Credential"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "ACIR (AIRS)", desc: "Aligned with Canadian market"}, {name: "CPHR Talent Acquisition", desc: "Micro-credentials"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD Talent Acquisition", desc: "Specialist Pathway"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "AHRI Recruitment Pathway", desc: "Recruitment specialization"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "LinkedIn Recruiter", desc: "Certification"}, {name: "NASSCOM HR Recruiter", desc: "Industry modules"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "LinkedIn Talent Solutions (UAE)", desc: "Platform certification"}, {name: "CIPD Talent Acquisition", desc: "Delivered via UAE providers"}] }
+                ]
+            },
+            {
+                title: "3. Compensation, Benefits & Total Rewards",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "CCP", desc: "Certified Compensation Professional"}, {name: "CBP", desc: "Certified Benefits Professional"}, {name: "GRP", desc: "Global Remuneration Professional"}, {name: "CECP", desc: "Executive Compensation"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "WorldatWork", desc: "Same as US standards"}, {name: "CEBS", desc: "Certified Employee Benefits Specialist"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD Reward Management", desc: "Reward pathway"}, {name: "WorldatWork", desc: "Widely accepted"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "WorldatWork", desc: "Accepted standard"}, {name: "AHRI Reward", desc: "Specialization"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "Aon / Mercer Reward", desc: "Consulting certifications"}, {name: "WorldatWork CCP / GRP", desc: "Global standards"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "WorldatWork GCC", desc: "Popular with UAE comp teams"}, {name: "CECP", desc: "Executive comp focus"}] }
+                ]
+            },
+            {
+                title: "4. Payroll",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "APA FPC", desc: "Fundamental Payroll Certification"}, {name: "APA CPP", desc: "Certified Payroll Professional"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "PCP", desc: "Payroll Compliance Practitioner"}, {name: "PLP", desc: "Payroll Leadership Professional"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPP Payroll Technician", desc: "Operational payroll"}, {name: "CIPP Payroll Management", desc: "Strategic payroll"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "Australian Payroll Association", desc: "Certifications"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "KPMG / EY Payroll", desc: "Tax & Payroll Certs"}, {name: "SHRM PHRi", desc: "Covers fundamentals"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "GCC Payroll Professional", desc: "Regional payroll focus"}, {name: "End-of-Service Specialist", desc: "Gratuity & EOSB"}] }
+                ]
+            },
+            {
+                title: "5. Learning & Development / OD",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "ATD CPTD", desc: "Certified Professional in Talent Dev"}, {name: "ATD APTD", desc: "Associate Professional"}, {name: "SHRM L&D", desc: "Credential"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "ICF Coaching", desc: "Certifications"}, {name: "CSTD L&D", desc: "Certifications"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD L&D", desc: "Specialization"}, {name: "ILM Coaching", desc: "Leadership & Coaching"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "AHRI OD/L&D", desc: "Specialization"}, {name: "ICF Coaching", desc: "Global standard"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "ISTD Diploma", desc: "Training & Development"}, {name: "IIM/XLRI L&D", desc: "Executive Certifications"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "CIPD L&D (UAE)", desc: "Specialist pathway"}, {name: "ATD Workshops Dubai", desc: "Regional delivery"}] }
+                ]
+            },
+            {
+                title: "6. HRIS / HR Tech / People Analytics",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "Workday HCM", desc: "Vendor certification"}, {name: "SAP SuccessFactors", desc: "Vendor certification"}, {name: "UKG Pro", desc: "Vendor certification"}, {name: "Google Data Analytics", desc: "General skills"}, {name: "SHRM People Analytics", desc: "Specialty"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "HR Analytics Certificates", desc: "York, Rotman, UBC"}, {name: "CPHR Analytics", desc: "Micro-credentials"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD People Analytics", desc: "Specialist unit"}, {name: "HR Analytics Academy", desc: "UK provider"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "AHRI Analytics", desc: "Programs"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "NIIT HR Analytics", desc: "Course"}, {name: "ExcelR Analytics", desc: "Course"}, {name: "Workday/SAP", desc: "Global"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "ATD Dubai", desc: "Local delivery"}, {name: "CIPD L&D (UAE)", desc: "Regional providers"}] }
+                ]
+            },
+            {
+                title: "7. Labour Relations / IR / ER",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "SHRM Employee Relations", desc: "Credential"}, {name: "Cornell ILR", desc: "Certificates"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "Queen’s IRC", desc: "Labour Relations Certificate"}, {name: "York University", desc: "LR Programs"}, {name: "CHRL", desc: "Covers ER components"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD Employee Relations", desc: "Pathway"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "AHRI Employee Relations", desc: "Specialization"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "NHRDN IR", desc: "Certification"}, {name: "XLRI Labour Laws", desc: "Certificate"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "UAE Labour Relations", desc: "MOHRE-aligned"}, {name: "Free Zone ER", desc: "DIFC/ADGM focus"}] }
+                ]
+            },
+            {
+                title: "8. Health & Safety / Workers’ Comp",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "OSHA Certifications", desc: "Federal safety"}, {name: "HRCI WHS", desc: "Workplace Health & Safety"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "CRSP", desc: "Registered Safety Professional"}, {name: "Joint H&S Committee", desc: "Provincial Certification"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "NEBOSH", desc: "National Exam Board"}, {name: "IOSH", desc: "Inst. of Occupational Safety"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "WorkSafe WHS", desc: "Courses"}, {name: "NEBOSH", desc: "Valid"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "NEBOSH", desc: "International"}, {name: "IOSH", desc: "International"}, {name: "Indian Safety Council", desc: "Programs"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "NEBOSH (UAE)", desc: "Widely accepted"}, {name: "DIFC H&S", desc: "Free zone standards"}] }
+                ]
+            },
+            {
+                title: "9. Diversity, Equity & Inclusion (DEI)",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "Cornell DEI", desc: "Certificate"}, {name: "SHRM Inclusive Workplace", desc: "Specialty"}, {name: "Yale DEI", desc: "Programs"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "CCDI", desc: "DEI Certifications"}, {name: "CPHR DEI", desc: "Tracks"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD DEI", desc: "Pathway"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "AHRI Inclusion & Diversity", desc: "Pathway"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "SHRM DEI", desc: "Certification"}, {name: "NASSCOM DEI", desc: "Programs"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "CIPD DEI (UAE)", desc: "Specialist units"}, {name: "Hult EF DEI", desc: "Executive programs in Dubai"}] }
+                ]
+            },
+            {
+                title: "10. Global Mobility & Immigration",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "GMS (Worldwide ERC)", desc: "Global Mobility Specialist"}, {name: "SHRM Global Mobility", desc: "Credential"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "RCIC Programs", desc: "Regulated Immigration Consultant"}, {name: "CERC Mobility", desc: "Certifications"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "CIPD International HR", desc: "Specialist"}, {name: "Worldwide ERC", desc: "Global"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "Migration Institute", desc: "Certifications"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "SHRM Global Mobility", desc: "Credential"}, {name: "Worldwide ERC GMS", desc: "Global"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "Worldwide ERC GMS", desc: "Popular for expat moves"}, {name: "CIPD International HR", desc: "Regional delivery"}] }
+                ]
+            },
+            {
+                title: "11. Change Management",
+                regions: [
+                    { country: "US", flag: "🇺🇸", certs: [{name: "Prosci", desc: "Change Management"}, {name: "ACMP CCMP", desc: "Certified Change Manager"}] },
+                    { country: "Canada", flag: "🇨🇦", certs: [{name: "Prosci", desc: "Major provider"}, {name: "CCMP", desc: "Global"}] },
+                    { country: "UK", flag: "🇬🇧", certs: [{name: "APMG Change Management", desc: "Foundation/Practitioner"}] },
+                    { country: "Australia", flag: "🇦🇺", certs: [{name: "Prosci ANZ", desc: "Regional provider"}, {name: "AHRI Change", desc: "Programs"}] },
+                    { country: "India", flag: "🇮🇳", certs: [{name: "Prosci India", desc: "Regional provider"}] },
+                    { country: "Dubai", flag: "🇦🇪", certs: [{name: "Prosci MENA", desc: "Local bootcamps"}, {name: "APMG Change (UAE)", desc: "Foundation/Practitioner"}] }
+                ]
+            },
+            {
+                title: "12. ESG & Sustainability HR",
+                regions: [
+                    { country: "Global", flag: "🌍", certs: [{name: "GRI Certification", desc: "Global Reporting Initiative"}, {name: "SASB / IFRS ESG", desc: "Reporting Standards"}, {name: "ESG HR Specialty", desc: "Programs (US/Canada/UK)"}] }
+                ]
+            }
+        ];
+
+        // --- Exam Experience & Passing Tips by Country ---
+        const examExperienceByCountry = {
+            USA: {
+                intro: "What exam takers say about US HR credentials and how they pass.",
+                exams: [
+                    {
+                        name: "SHRM-CP / SHRM-SCP",
+                        feel: "Scenario-heavy situational judgement questions that test how you would respond as an HRBP rather than what you have memorized.",
+                        tips: [
+                            "Budget 8-12 weeks with 1-2 hour study blocks using the SHRM Learning System or chapter study groups.",
+                            "Drill behaviour-based practice questions and pay attention to ‘most/least effective’ wording to avoid traps.",
+                            "Review US federal laws at a high level (FMLA, FLSA, Title VII) and how to apply them in realistic situations."
+                        ]
+                    },
+                    {
+                        name: "PHR / SPHR (HRCI)",
+                        feel: "More compliance and calculation oriented than SHRM, with a focus on risk mitigation and employment law detail.",
+                        tips: [
+                            "Use timed practice exams to build speed on math-style items (turnover, yield ratios, comp).",
+                            "Anchor answers in legally defensible steps first, then efficiency or culture considerations second.",
+                            "Create a one-pager of federal thresholds (exempt vs non-exempt, notice periods, record retention)."
+                        ]
+                    }
+                ]
+            },
+            Canada: {
+                intro: "How Canadian candidates describe the NKE/CHRL journey and what helps them succeed.",
+                exams: [
+                    {
+                        name: "CPHR National Knowledge Exam (NKE)",
+                        feel: "Multiple-choice questions that mirror textbook HRM content with Canadian employment standards woven in.",
+                        tips: [
+                            "Study the nine CPHR functional areas; pair the Competency Framework with provincial employment standards notes.",
+                            "Do timed mock exams to manage a long test window and reduce over-thinking on straightforward items.",
+                            "Keep flashcards for minimums (vacation, overtime, stat holidays) by province to avoid mixing jurisdictions."
+                        ]
+                    },
+                    {
+                        name: "Ontario HRPA CHRL/CHRP Exams",
+                        feel: "Application-heavy scenarios that expect you to cite ESA rules, health & safety, and human rights obligations.",
+                        tips: [
+                            "Use the HRPA prep guides plus ESA/OSHA checklists so you can spot the mandatory first response in each scenario.",
+                            "Practice writing short rationales: why an action is compliant, fair, and business-aligned.",
+                            "Join local HRPA chapter study circles to trade sample cases and marking schemes."
+                        ]
+                    }
+                ]
+            },
+            UK: {
+                intro: "Typical learner feedback from CIPD candidates and the habits that get them through assessments.",
+                exams: [
+                    {
+                        name: "CIPD Level 5 / Level 7",
+                        feel: "Assignment and portfolio driven rather than one-off exams, with strong emphasis on evidence, reflection, and linking to CIPD Profession Map behaviours.",
+                        tips: [
+                            "Start each assignment with a clear structure (context, analysis, options, recommendation, references).",
+                            "Reference UK employment statutes (ERA 1996, Equality Act 2010) to ground your arguments in compliance.",
+                            "Collect workplace evidence early (policies, meeting notes, metrics) so portfolios are not rushed at deadline week."
+                        ]
+                    }
+                ]
+            },
+            Australia: {
+                intro: "Insights from AHRI certification candidates on what the assessment feels like and how they prepare.",
+                exams: [
+                    {
+                        name: "AHRI Certified Practitioner (CPHR)",
+                        feel: "Workplace evidence submission plus an interview that probes how you applied the AHRI Model of Excellence in real situations.",
+                        tips: [
+                            "Map each piece of evidence to a specific Model of Excellence capability and include measurable outcomes.",
+                            "Rehearse STAR stories focused on Awards, NES, and Fair Work compliance to handle panel questions confidently.",
+                            "Request supervisor feedback letters early; missing documentation is the top reason for delays."
+                        ]
+                    }
+                ]
+            },
+            India: {
+                intro: "What Indian HR professionals report about global exams taken locally and how they pass them.",
+                exams: [
+                    {
+                        name: "SHRM-CP / SCP (India)",
+                        feel: "Same global blueprint, but test centres note more scenario items on labour codes, contract staffing, and employee relations nuance.",
+                        tips: [
+                            "Balance global SHRM prep with a refresher on new Labour Codes, POSH, gratuity, and PF/ESI thresholds.",
+                            "Do bilingual (EN/Hindi) flashcards for statutory amounts to speed recall under time pressure.",
+                            "Join SHRM India WhatsApp/Telegram groups for recent candidates’ debriefs and time-management tips."
+                        ]
+                    },
+                    {
+                        name: "IR/Labour Law Certificates (XLRI/NIPM)",
+                        feel: "Case-study and short-answer style, heavy on practical remedies for disputes, strikes, and compliance gaps.",
+                        tips: [
+                            "Outline the legal provision first, then propose a remedy that protects management-union relationships.",
+                            "Memorize timelines (notice of strike, conciliation steps) and forms required under state Shops & Establishment Acts.",
+                            "Practice writing concise 200–300 word answers; markers reward clarity over volume."
+                        ]
+                    }
+                ]
+            },
+            Dubai: {
+                intro: "How UAE-based candidates describe HR credentials and what helps them pass.",
+                exams: [
+                    {
+                        name: "UAE Labour Law Certificates",
+                        feel: "Scenario-led quizzes on gratuity, notice, and leave with mainland vs free-zone twists.",
+                        tips: [
+                            "Memorize gratuity brackets for limited vs unlimited contracts and build a quick calc sheet.",
+                            "Highlight where MOHRE timelines differ from DIFC/ADGM requirements.",
+                            "Practice drafting compliant termination and warning letters for case studies."
+                        ]
+                    },
+                    {
+                        name: "CIPD Level 5 / 7 (UAE Delivery)",
+                        feel: "Assignment-driven with evidence from your own Dubai workplace and references to UAE law.",
+                        tips: [
+                            "Collect policy samples and metrics early so you have evidence for every unit.",
+                            "Use CIPD Profession Map language while noting UAE compliance touchpoints.",
+                            "Book tutorials with providers to sanity-check your reflective pieces."
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // --- Career Roadmaps for Each Specialization ---
+        const specializationRoadmaps = [
+            {
+                title: "HR Generalist / Business Partner",
+                summary: "Build breadth across hiring, onboarding, payroll, policy and employee relations before moving into strategic partnering.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Start in HR coordinator/assistant roles, master HRIS basics, compliance checklists and onboarding." },
+                    { stage: "Years 2-4", detail: "Earn SHRM-CP/PHRi, take ownership of a client group, and lead a small policy or handbook refresh." },
+                    { stage: "Years 4-7", detail: "Move into HRBP, drive workforce planning, partner with finance, and present people metrics to leadership." }
+                ],
+                certs: ["SHRM-CP/PHRi", "CPHR/CHRL", "SHRM-SCP/SPHR"]
+            },
+            {
+                title: "Talent Acquisition & Employer Brand",
+                summary: "Grow from sourcing excellence to full-stack recruiting and brand ownership.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Master sourcing (Boolean, LinkedIn), candidate experience, and ATS hygiene; earn AIRS/LinkedIn badges." },
+                    { stage: "Years 2-4", detail: "Own requisitions end-to-end, build scorecards, pilot structured interviews, and report funnel metrics." },
+                    { stage: "Years 4-6", detail: "Lead a TA pod, launch an employer brand campaign, and partner with finance on headcount planning." }
+                ],
+                certs: ["AIRS CIR", "LinkedIn Talent Insights", "SHRM Talent Acquisition"]
+            },
+            {
+                title: "Compensation, Benefits & Total Rewards",
+                summary: "Develop pay structures, benefits governance and executive comp literacy.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Run payroll data checks, benchmark roles, and learn Excel/Sheets modeling." },
+                    { stage: "Years 2-4", detail: "Complete WorldatWork modules (CCP/GRP), build salary bands, and audit variable pay plans." },
+                    { stage: "Years 4-7", detail: "Design annual compensation cycles, run market-pricing refreshes, and brief leadership on pay equity risks." }
+                ],
+                certs: ["CCP/GRP", "CBP", "CECP"]
+            },
+            {
+                title: "Learning, OD & Change",
+                summary: "Move from facilitation to org design and change leadership.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Facilitate onboarding or soft-skills sessions, shadow instructional design, and gather feedback data." },
+                    { stage: "Years 2-4", detail: "Earn APTD/CIPD L&D, build learning journeys, and measure completion + NPS." },
+                    { stage: "Years 4-7", detail: "Lead change projects (Prosci/ADKAR), partner with leaders on redesign, and publish ROI stories." }
+                ],
+                certs: ["ATD APTD/CPTD", "CIPD L&D", "Prosci Change"]
+            },
+            {
+                title: "People Analytics / HR Tech",
+                summary: "Grow from reporting to predictive insights and systems ownership.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Build clean HRIS dashboards, learn SQL/Sheets, and automate recurring reports." },
+                    { stage: "Years 2-4", detail: "Earn vendor certs (Workday/SAP/UKG) and launch a people data dictionary with clear definitions." },
+                    { stage: "Years 4-6", detail: "Ship predictive pilots (attrition/quality-of-hire), ensure data governance, and present findings to ELT." }
+                ],
+                certs: ["Workday HCM", "SAP SuccessFactors", "People Analytics Micro-credentials"]
+            },
+            {
+                title: "Employee Relations / Labour Relations",
+                summary: "Progress from case management to proactive labour strategy.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Handle tickets/documentation, learn investigation interviewing, and track issue trends." },
+                    { stage: "Years 2-4", detail: "Earn ER/IR certificates, write manager toolkits, and co-lead a small investigation end-to-end." },
+                    { stage: "Years 4-7", detail: "Own relations strategy for a business unit, brief leadership on risk, and partner with legal on settlements." }
+                ],
+                certs: ["SHRM Employee Relations", "CIPD Employee Relations", "Queen's IRC / Cornell ILR"]
+            },
+            {
+                title: "Diversity, Equity & Inclusion",
+                summary: "Shift from program support to DEI strategy and accountability.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Support ERGs, track participation, and learn inclusive hiring basics." },
+                    { stage: "Years 2-4", detail: "Earn DEI certificates, run bias training with follow-up metrics, and embed inclusion into job design." },
+                    { stage: "Years 4-6", detail: "Set DEI OKRs, publish dashboards, and align leadership incentives to equity outcomes." }
+                ],
+                certs: ["SHRM Inclusive Workplace", "Cornell/Yale DEI", "CCDI/CIPD DEI"]
+            },
+            {
+                title: "Health, Safety & Wellbeing",
+                summary: "Advance from compliance to proactive risk prevention and wellness strategy.",
+                steps: [
+                    { stage: "Years 0-2", detail: "Complete OSHA/NEBOSH basics, perform safety walkthroughs, and document incidents." },
+                    { stage: "Years 2-4", detail: "Build training calendars, partner with facilities on ergonomics, and analyze injury trends." },
+                    { stage: "Years 4-6", detail: "Design a holistic wellbeing program, run drills/audits, and report cost avoidance to leadership." }
+                ],
+                certs: ["OSHA/IOSH", "NEBOSH", "HRCI WHS"]
+            }
+        ];
+
+        // --- Bookshelf Data ---
+        const booksData = {
+            categories: [
+                {
+                    title: "Core HR & People Management",
+                    books: [
+                        { title: "The Essential HR Handbook", author: "Sharon Armstrong", about: "A practical, “grab-and-go” guide to everyday HR issues.", why: "Perfect for beginners or accidental HR people who need clear, actionable answers fast." },
+                        { title: "HR from the Outside In", author: "Dave Ulrich", about: "How HR adds value by focusing on customers, investors and the business, not just employees.", why: "Teaches you to think like a business partner, not just a policy administrator." },
+                        { title: "Work Rules!", author: "Laszlo Bock", about: "Inside Google’s approach to people, culture and data-driven HR.", why: "Shows how modern HR uses experiments, analytics and radical transparency." }
+                    ]
+                },
+                {
+                    title: "HR Leadership",
+                    books: [
+                        { title: "The Future CHRO", author: "Dave Ulrich", about: "What the next generation of CHROs need to know and do.", why: "A roadmap if you see yourself sitting at the executive table one day." },
+                        { title: "Powerful", author: "Patty McCord", about: "Netflix’s bold approach to culture, freedom and responsibility.", why: "Challenges traditional HR thinking about policies, performance and trust." }
+                    ]
+                }
+            ]
+        };
+
+        // --- Main App Data ---
+        const certificationData = {
+            USA: {
+                name: "United States",
+                flag: "🇺🇸",
+                authority: "SHRM & HRCI",
+                avgSalary: "$85,000 USD",
+                legalSystem: "Employment At-Will",
+                description: "The US market is dominated by competency-based certifications. SHRM is currently the most widely recognized.",
+                topCerts: [
+                    { acronym: "SHRM-CP", fullName: "SHRM Certified Professional", level: "Early-Mid Career", focus: "Operational HR roles.", cost: "$375 - $475" },
+                    { acronym: "SPHR", fullName: "Senior Professional in Human Resources", level: "Senior/Strategic", focus: "Strategy & Policy.", cost: "$495 - $595" }
+                ],
+                roadmap: [{title: "Eligibility", desc: "Check degree/experience."}, {title: "Prep", desc: "Study ~3 months."}, {title: "Exam", desc: "Pass the exam."}],
+                specializations: [], // Keeping empty to use globalCerts for the dedicated tab
+                compliance: {
+                    intro: "US employment law is a complex web of Federal (nationwide) and State-level regulations. HR pros must comply with both.",
+                    sections: [
+                        {
+                            title: "1. Federal Employment Laws (Must-Know)",
+                            items: [
+                                { name: "FLSA", desc: "Fair Labor Standards Act. Governs minimum wage, overtime pay, recordkeeping, and child labor." },
+                                { name: "FMLA", desc: "Family and Medical Leave Act. Provides unpaid, job-protected leave for family/medical reasons." },
+                                { name: "Title VII (CRA)", desc: "Civil Rights Act. Prohibits discrimination based on race, color, religion, sex, or national origin." },
+                                { name: "ADA", desc: "Americans with Disabilities Act. Requires reasonable accommodation for employees with disabilities." },
+                            ]
+                        },
+                        {
+                            title: "2. Essential HR Forms",
+                            items: [
+                                { name: "Form I-9", desc: "Employment Eligibility Verification. Must be completed for every new hire." },
+                                { name: "Form W-4", desc: "Employee's Withholding Certificate for federal taxes." },
+                                { name: "Offer Letter", desc: "Formal job offer outlining role, salary, and employment at-will status." }
+                            ]
+                        }
+                    ]
+                },
+                resources: {
+                    sections: [
+                        {
+                            category: "Flagship HR Master's Programs",
+                            schools: [
+                                { name: "Cornell University (ILR School)", programs: ["Master of Industrial and Labor Relations (MILR)", "Executive Master of HRM"] },
+                                { name: "Rutgers University (SMLR)", programs: ["Master of HRM (MHRM)", "Labor Relations"] },
+                                { name: "Purdue University (Krannert)", programs: ["MS Human Resource Management"] },
+                                { name: "University of Minnesota (Carlson)", programs: ["MA in HR & Industrial Relations"] }
+                            ]
+                        }
+                    ]
+                },
+                insiderTip: "US employers value experience + SHRM/HRCI above most masters degrees for generalist roles."
+            },
+            Canada: {
+                name: "Canada",
+                flag: "🇨🇦",
+                authority: "CPHR / HRPA",
+                avgSalary: "$80,000 CAD",
+                legalSystem: "Common Law + Civil (Quebec)",
+                description: "Highly regulated profession with provincial designations.",
+                topCerts: [
+                    { acronym: "CHRL", fullName: "Certified HR Leader", level: "Management", focus: "Strategy/Law (Ontario)", cost: "$500+" },
+                    { acronym: "CPHR", fullName: "Chartered Professional in HR", level: "National", focus: "Generalist", cost: "$1,500+" }
+                ],
+                roadmap: [{title: "Degree", desc: "Bachelors required."}, {title: "NKE", desc: "Pass Knowledge Exam."}, {title: "Exp", desc: "3 yrs experience."}],
+                specializations: [],
+                compliance: {
+                    intro: "In Canada, employment law is primarily Provincial (90% of employees), with Federal law covering specific industries like banking and telecom.",
+                    sections: [
+                        {
+                            title: "1. Employment Standards (By Province)",
+                            items: [
+                                { name: "Federal (CLC)", desc: "Canada Labour Code. Covers banks, airlines, telecom, interprovincial transport." },
+                                { name: "Ontario (ESA)", desc: "Employment Standards Act. Rules for hours, vacation, termination pay." },
+                                { name: "British Columbia", desc: "BC Employment Standards Act. Specifics on OT and leaves." }
+                            ]
+                        },
+                        {
+                            title: "2. Payroll Taxes & Agencies",
+                            items: [
+                                { name: "CRA (Federal)", desc: "Canada Revenue Agency. Collects Income Tax, CPP, EI." },
+                                { name: "Workers Comp", desc: "WSIB (ON), WorkSafeBC, WCB (AB). Mandatory employer premiums." }
+                            ]
+                        }
+                    ]
+                },
+                resources: {
+                    sections: [
+                        {
+                            category: "British Columbia",
+                            schools: [
+                                { name: "University of British Columbia (Sauder)", programs: ["BCom (Organizational Behaviour & HRM)"] },
+                                { name: "Simon Fraser University (Beedie)", programs: ["BBA HRM", "HR Certificates"] }
+                            ]
+                        },
+                        {
+                            category: "Ontario",
+                            schools: [
+                                { name: "York University", programs: ["Bachelor of HRM (BHRM)", "Master of HRM (MHRM)"] },
+                                { name: "University of Toronto", programs: ["BCom/BBA with HR/OB focus", "MIRHR"] }
+                            ]
+                        }
+                    ]
+                },
+                insiderTip: "Ontario (HRPA) has different rules than the rest of Canada (CPHR). Check your province."
+            },
+            UK: {
+                name: "United Kingdom",
+                flag: "🇬🇧",
+                authority: "CIPD",
+                avgSalary: "£45,000 GBP",
+                legalSystem: "Employment Contracts",
+                description: "Qualification-based system managed by CIPD.",
+                topCerts: [
+                    { acronym: "Lvl 5", fullName: "Associate Diploma", level: "Mid-Level", focus: "People Mgmt", cost: "£2,500+" },
+                    { acronym: "Lvl 7", fullName: "Advanced Diploma", level: "Strategic", focus: "Strategic HR", cost: "£6,000+" }
+                ],
+                roadmap: [{title: "Study", desc: "Enroll at center."}, {title: "Assignments", desc: "Complete units."}, {title: "Upgrade", desc: "Become Assoc CIPD."}],
+                specializations: [],
+                compliance: {
+                    intro: "UK law is derived from Parliamentary Acts. Employees have strong statutory rights (ERA 1996).",
+                    sections: [
+                        {
+                            title: "1. Key Employment Laws",
+                            items: [
+                                { name: "Employment Rights Act (1996)", desc: "The foundation of UK labour law (unfair dismissal, redundancy)." },
+                                { name: "Equality Act (2010)", desc: "Protects against discrimination (9 protected characteristics)." }
+                            ]
+                        },
+                        {
+                            title: "2. HR Forms & Checks",
+                            items: [
+                                { name: "Right to Work Check", desc: "Mandatory before employment starts." },
+                                { name: "P45 / P60", desc: "Tax forms given upon leaving (P45) or year-end (P60)." }
+                            ]
+                        }
+                    ]
+                },
+                resources: {
+                    sections: [
+                        {
+                            category: "CIPD-Accredited MSc HRM Programs",
+                            schools: [
+                                { name: "London School of Economics (LSE)", programs: ["MSc Human Resources & Organisations"] },
+                                { name: "University of Bath", programs: ["MSc Human Resource Management"] },
+                                { name: "King's College London", programs: ["MSc HRM & Organisational Analysis"] }
+                            ]
+                        }
+                    ]
+                },
+                insiderTip: "Without CIPD Level 5 or 7, moving up to Manager/BP roles is very difficult."
+            },
+            Australia: {
+                name: "Australia",
+                flag: "🇦🇺",
+                authority: "AHRI",
+                avgSalary: "$100,000 AUD",
+                legalSystem: "Fair Work Act",
+                description: "AHRI CPHR is the benchmark.",
+                topCerts: [
+                    { acronym: "CPHR", fullName: "Certified Practitioner", level: "Standard", focus: "Model of Excellence", cost: "$3,000+" }
+                ],
+                roadmap: [{title: "Member", desc: "Join AHRI."}, {title: "APC", desc: "Complete Program."}, {title: "Exp", desc: "5 Years exp."}],
+                specializations: [],
+                compliance: {
+                    intro: "Australia uses a unique Modern Award system alongside National Employment Standards (NES).",
+                    sections: [
+                        {
+                            title: "1. Key Laws",
+                            items: [
+                                { name: "Fair Work Act", desc: "The primary legislation governing employment relations." },
+                                { name: "NES", desc: "11 National Employment Standards applicable to all employees." }
+                            ]
+                        },
+                        {
+                            title: "2. Payroll & Superannuation",
+                            items: [
+                                { name: "ATO (STP)", desc: "Single Touch Payroll reporting to the Tax Office." },
+                                { name: "Superannuation", desc: "Mandatory employer contribution (currently rising annually)." }
+                            ]
+                        },
+                        {
+                            title: "3. Forms",
+                            items: [
+                                { name: "TFN Declaration", desc: "Tax File Number declaration form." },
+                                { name: "Fair Work Info Statement", desc: "Must be provided to every new employee." },
+                                { name: "Super Choice Form", desc: "Employee nomination of super fund." }
+                            ]
+                        }
+                    ]
+                },
+                resources: {
+                    sections: [
+                        {
+                            category: "Top Master's in HRM",
+                            schools: [
+                                { name: "University of Melbourne", programs: ["Master of HRM"] },
+                                { name: "Monash University", programs: ["Master of HRM"] },
+                                { name: "University of Sydney", programs: ["Master of HRM & Industrial Relations"] }
+                            ]
+                        }
+                    ]
+                },
+                insiderTip: "Understanding the Modern Awards system is crucial for Aus HR."
+            },
+            India: {
+                name: "India",
+                flag: "🇮🇳",
+                authority: "NHRD / SHRM India",
+                avgSalary: "₹12,00,000 INR",
+                legalSystem: "Complex Labor Laws",
+                description: "MBA is king, but certifications distinguish you.",
+                topCerts: [
+                    { acronym: "SHRM-India", fullName: "SHRM-CP/SCP", level: "Global", focus: "Competencies", cost: "₹50k+" }
+                ],
+                roadmap: [{title: "MBA", desc: "Get PGDM/MBA."}, {title: "Cert", desc: "Add SHRM/Analytics."}],
+                specializations: [],
+                compliance: {
+                    intro: "India is transitioning from old Labour Acts to 4 new Labour Codes.",
+                    sections: [
+                        {
+                            title: "1. Key Labour Laws",
+                            items: [
+                                { name: "Code on Wages", desc: "Consolidates Payment of Wages, Minimum Wages, Bonus, and Equal Remuneration Acts." },
+                                { name: "POSH Act", desc: "Prevention of Sexual Harassment at Workplace. Mandatory IC constitution." }
+                            ]
+                        },
+                        {
+                            title: "2. Statutory Compliance",
+                            items: [
+                                { name: "EPF", desc: "Employee Provident Fund. Retirement savings scheme." },
+                                { name: "ESIC", desc: "Employee State Insurance. Medical benefits for lower-income employees." }
+                            ]
+                        }
+                    ]
+                },
+                resources: {
+                    sections: [
+                        {
+                            category: "Top MBA/PGDM in HR",
+                            schools: [
+                                { name: "XLRI Jamshedpur", programs: ["PGDM (HRM) - Benchmark Program"] },
+                                { name: "TISS Mumbai", programs: ["MA in HRM & Labour Relations"] },
+                                { name: "MDI Gurgaon", programs: ["PGDM-HRM"] }
+                            ]
+                        }
+                    ]
+                },
+                insiderTip: "Brand name of your MBA often outweighs certifications for entry-level roles."
+            },
+            Dubai: {
+                name: "Dubai / UAE",
+                flag: "🇦🇪",
+                authority: "MOHRE, Free Zone Authorities, CIPD UAE",
+                avgSalary: "AED 180,000",
+                legalSystem: "UAE Labour Law (Federal Decree-Law 33/2021)",
+                description: "A hub for multinational HR teams balancing mainland and free-zone rules.",
+                topCerts: [
+                    { acronym: "CIPD L5", fullName: "Associate Diploma (UAE)", level: "Mid-Level", focus: "People practice", cost: "AED 12k–18k" },
+                    { acronym: "Labour Law", fullName: "UAE Labour Law Certificate", level: "Compliance", focus: "Employment law basics", cost: "AED 2.5k–4k" }
+                ],
+                roadmap: [{title: "Eligibility", desc: "Pick mainland vs free-zone focus."}, {title: "Enroll", desc: "Choose CIPD or local provider."}, {title: "Evidence", desc: "Gather workplace proof for assignments."}],
+                specializations: [],
+                compliance: {
+                    intro: "Employers follow UAE Labour Law (mainland) or free-zone rules (e.g., DIFC/ADGM). Gratuity applies to most contracts.",
+                    sections: [
+                        {
+                            title: "1. Core Laws",
+                            items: [
+                                { name: "Federal Decree-Law 33/2021", desc: "Governs employment contracts, leave, and termination in mainland UAE." },
+                                { name: "DIFC & ADGM", desc: "Common law style rules with different leave, overtime, and dispute processes." }
+                            ]
+                        },
+                        {
+                            title: "2. Pay & Gratuity",
+                            items: [
+                                { name: "End-of-Service", desc: "Gratuity accrual differs by contract type and tenure." },
+                                { name: "Allowances", desc: "Housing, transport, flights, and schooling are common components." }
+                            ]
+                        },
+                        {
+                            title: "3. Essential Forms",
+                            items: [
+                                { name: "Employment Contract", desc: "Limited-term contract registered with MOHRE or free-zone authority." },
+                                { name: "Offer Letter", desc: "MOHRE template before visa processing." },
+                                { name: "Visa & Emirates ID", desc: "Required for onboarding and payroll activation." }
+                            ]
+                        }
+                    ]
+                },
+                resources: {
+                    sections: [
+                        {
+                            category: "Dubai Business Schools",
+                            schools: [
+                                { name: "Heriot-Watt University Dubai", programs: ["MSc Human Resource Management"] },
+                                { name: "University of Dubai", programs: ["MBA in HRM"] },
+                                { name: "Hult International Business School", programs: ["Executive programs in HR & Leadership"] }
+                            ]
+                        }
+                    ]
+                },
+                insiderTip: "Always check whether a policy must satisfy mainland MOHRE rules or the specific free zone you operate in."
+            }
+        };
+
+        // --- Associations Data (SHORTENED FOR BREVITY - Full data preserved in logic) ---
+        const associationsData = {
+            global: [
+                { name: "SHRM", fullName: "Society for Human Resource Management", desc: "The world’s largest HR association with 340,000+ members.", tags: ["Global", "Generalist"] },
+                { name: "ATD", fullName: "Association for Talent Development", desc: "Global network for L&D, training, facilitation, and coaching.", tags: ["Global", "L&D"] },
+                { name: "WorldatWork", fullName: "WorldatWork", desc: "Leading global community for compensation, total rewards, and benefits.", tags: ["Global", "Rewards"] },
+                { name: "HRCI", fullName: "HR Certification Institute", desc: "Worldwide HR certification community (PHR, SPHR) with networking.", tags: ["Global", "Certifications"] },
+                { name: "CIPD", fullName: "Chartered Inst. of Personnel & Dev", desc: "UK-based international HR professional community.", tags: ["Global", "Generalist"] }
+            ],
+            canada: [
+                { name: "CPHR Canada", fullName: "Chartered Professionals in HR", desc: "National federation representing 31,000+ HR professionals.", tags: ["🇨🇦 Canada", "National"] },
+                { name: "HRPA", fullName: "Human Resources Professionals Assoc.", desc: "Ontario’s regulatory body for HR pros with 24k+ members.", tags: ["🇨🇦 Ontario", "Regulatory"] },
+                { name: "NPI", fullName: "National Payroll Institute", desc: "Community for payroll pros offering PCP/PLP designations.", tags: ["🇨🇦 Canada", "Payroll"] }
+            ],
+            usa: [
+                { name: "SHRM USA", fullName: "SHRM Local Chapters", desc: "Hundreds of local chapters, events, and study groups.", tags: ["🇺🇸 USA", "Generalist"] },
+                { name: "HRCI Community", fullName: "HR Certification Institute", desc: "Professional network around PHR, SPHR, GPHR certs.", tags: ["🇺🇸 USA", "Certs"] },
+                { name: "ATD USA", fullName: "ATD Local Chapters", desc: "Strong local talent development & training communities.", tags: ["🇺🇸 USA", "L&D"] }
+            ],
+            uk: [
+                { name: "CIPD", fullName: "Chartered Inst. of Personnel & Dev", desc: "Main UK body for HR, L&D, and OD; 160k+ members.", tags: ["🇬🇧 UK", "Chartered"] },
+                { name: "CIPP", fullName: "Chartered Inst. of Payroll Profs", desc: "UK’s professional body for payroll and pensions.", tags: ["🇬🇧 UK", "Payroll"] }
+            ],
+            australia: [
+                { name: "AHRI", fullName: "Australian HR Institute", desc: "National peak body offering certification and networking.", tags: ["🇦🇺 Australia", "National"] }
+            ],
+            india: [
+                { name: "NHRDN", fullName: "National HRD Network", desc: "Large nationwide HR/HRD network with city chapters.", tags: ["🇮🇳 India", "Network"] },
+                { name: "NIPM", fullName: "National Inst. of Personnel Mgmt", desc: "Focusing on IR, labour laws, and personnel management.", tags: ["🇮🇳 India", "IR/Law"] },
+                { name: "ISTD", fullName: "Indian Society for Training & Dev", desc: "National body focused on L&D and instructional design.", tags: ["🇮🇳 India", "L&D"] }
+            ],
+            dubai: [
+                { name: "CIPD Middle East", fullName: "Chartered Institute of Personnel & Development", desc: "Regional hub for CIPD members with UAE events and study circles.", tags: ["🇦🇪 Dubai", "CIPD"] },
+                { name: "SHRM MENA", fullName: "SHRM Middle East & North Africa", desc: "Community events, webinars, and prep resources for SHRM credentials in the Gulf.", tags: ["🇦🇪 Dubai", "SHRM"] },
+                { name: "Dubai HR Forum", fullName: "Dubai HR Forum", desc: "Local meetup community focused on labour law updates and networking.", tags: ["🇦🇪 Dubai", "Networking"] }
+            ]
+        };
+
+        // --- Brains / Theories Data ---
+        const brainsData = {
+            economics: [
+                { icon: "🧠", title: "Behavioral Economics", label: "Why people act irrational at work", oneLine: "People are not rational robots – they make weird, biased decisions.", hrMeaning: "Don’t design policies assuming people will ‘do the logical thing’. You design performance reviews, benefits, and incentives knowing that framing, fairness, loss-aversion and bias heavily influence behaviour." },
+                { icon: "📈", title: "Human Capital Theory", label: "Learning as an investment", oneLine: "Education, skills, experience = economic assets, not just ‘costs’.", hrMeaning: "Training, upskilling, coaching, and development aren’t just ‘nice to have’ — they are literally investments with a return." },
+                { icon: "📜", title: "Contract Theory", label: "Incentives and behaviour", oneLine: "How you pay people shapes how they behave.", hrMeaning: "Bonus plans, commissions and executive compensation must be designed so people don’t game the system but move the company in the right direction." },
+                { icon: "🧩", title: "Matching Theory", label: "Right person, right job", oneLine: "Hiring is a matching game: right worker + right job = value.", hrMeaning: "Great recruiting is about matching skills, motivations and culture with the right job, not just filling vacancies." },
+                { icon: "♟️", title: "Game Theory", label: "Thinking in moves and countermoves", oneLine: "People make choices based on what they think others will do.", hrMeaning: "Use it for salary negotiations, union bargaining and change management: if you push here, what counter-move will employees or unions make?" },
+                { icon: "⚙️", title: "Mechanism Design", label: "Design the rules so good behaviour is easy", oneLine: "Design the system so the best behaviour is also the easiest behaviour.", hrMeaning: "Policies, recognition and promotion rules should naturally nudge people toward collaboration, ethics and performance." }
+            ],
+            psychology: [
+                { icon: "🔺", title: "Maslow’s Hierarchy of Needs", label: "From paycheque to purpose", oneLine: "People climb from basic needs (salary, safety) to higher needs (belonging, esteem, purpose).", hrMeaning: "You can’t fix engagement with ‘purpose workshops’ if people don’t feel safe, respected or fairly paid." },
+                { icon: "⚖️", title: "Herzberg’s Two-Factor Theory", label: "What stops pain vs what creates joy", oneLine: "Some things stop people from hating their job (hygiene), others make them love it (motivators).", hrMeaning: "Salary and policies prevent dissatisfaction; growth, recognition and meaningful work create real motivation." },
+                { icon: "🌟", title: "Self-Determination Theory", label: "Autonomy, competence, connection", oneLine: "Humans are happiest when they feel autonomy, competence and relatedness.", hrMeaning: "Micromanagement kills motivation. Design jobs with ownership, chances to get better and real relationships." },
+                { icon: "🏆", title: "McClelland’s Needs Theory", label: "Achievement, power, belonging", oneLine: "People are driven by different mixes of three needs: to achieve, to belong and to influence.", hrMeaning: "Use it in hiring and leadership development – some roles need high achievement, others need affiliation or power." },
+                { icon: "🖐️", title: "Big Five Personality Traits", label: "Five dimensions of personality", oneLine: "Personality can be seen as Openness, Conscientiousness, Extraversion, Agreeableness and Neuroticism.", hrMeaning: "Helps with role fit, team-building and coaching (used carefully, not to stereotype people)." },
+                { icon: "🔄", title: "Tuckman’s Team Stages", label: "Forming, storming, norming, performing", oneLine: "Teams often go through predictable stages before they perform well.", hrMeaning: "Conflict in a new team isn’t always a red flag – it can be a normal stage that leaders can guide through." },
+                { icon: "🛡️", title: "Psychological Safety", label: "Safe to speak up", oneLine: "People do their best work when they feel safe to speak up, admit mistakes and share ideas.", hrMeaning: "Policies and leaders should reward speaking up, not punish it. It’s the foundation of learning and innovation." },
+                { icon: "⚖️", title: "Equity Theory", label: "It’s not just pay – it’s fairness", oneLine: "People compare their effort and rewards with others and care deeply about fairness.", hrMeaning: "Internal equity, fair processes and transparent logic are as important as the salary number itself." },
+                { icon: "🎯", title: "Expectancy Theory", label: "Will my effort actually matter?", oneLine: "People are motivated when they believe effort → performance → reward, and the reward is worth it.", hrMeaning: "Performance and reward systems must be clear, believable and meaningful – or motivation disappears." },
+                { icon: "🎭", title: "Cognitive Dissonance", label: "When words and reality clash", oneLine: "When actions and beliefs don’t match, people feel psychological tension.", hrMeaning: "If the company says ‘we value work-life balance’ but rewards only long hours, employees lose trust and engagement." },
+                { icon: "📉", title: "Prospect Theory", label: "Losses hurt more than gains feel good", oneLine: "People are more sensitive to losses than to equivalent gains.", hrMeaning: "Cutting benefits hurts more than adding similar benefits helps. Be careful how you frame changes." },
+                { icon: "🚫", title: "Cognitive Biases in HR", label: "Brain shortcuts that cause unfairness", oneLine: "Our brains use shortcuts like halo effect, anchoring and confirmation bias.", hrMeaning: "Use structured interviews, clear criteria and data to reduce bias in hiring, performance ratings and promotions." }
+            ]
+        };
+
+        // --- Country Specializations Components ---
+        const specializationsData = window.COUNTRY_SPECIALIZATIONS || {};
+
+        const CertificationCard = ({ cert, expanded, onToggle, index, total }) => (
+            <div className="relative pl-6">
+                <div className="absolute left-0 top-1.5 bottom-0 w-0.5 bg-gray-200" aria-hidden="true"></div>
+                <div className="absolute left-[-5px] top-1.5 w-2.5 h-2.5 rounded-full bg-gray-900" aria-hidden="true"></div>
+
+                <div className="glass-card rounded-xl p-4 border border-white/60 shadow-sm">
+                    <div className="flex items-start justify-between gap-3">
+                        <div>
+                            <h5 className="text-lg font-bold text-slate-900 leading-tight">{cert.name}</h5>
+                            <p className="text-sm text-slate-600 mt-1">Level: {cert.level} • Recognition: {cert.recognition}</p>
+                        </div>
+                        <span className="text-[11px] font-semibold uppercase tracking-wide bg-gray-900 text-white px-3 py-1 rounded-full border border-gray-900">{cert.difficulty}</span>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap gap-2 text-xs font-semibold text-gray-700">
+                        <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
+                            <Calendar className="w-4 h-4" /> {cert.duration}
+                        </span>
+                        <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
+                            <BookOpen className="w-4 h-4" /> {cert.costRange}
+                        </span>
+                        <span className="px-3 py-2 rounded-lg bg-gray-100 border border-gray-200 inline-flex items-center gap-2">
+                            <Headphones className="w-4 h-4" /> {cert.careers.length} career tracks
+                        </span>
+                    </div>
+
+                    <div className="mt-4 flex justify-between items-center">
+                        <div className="text-xs text-gray-500 font-semibold">Roadmap stop {index + 1} of {total}</div>
+                        <button onClick={onToggle} className="text-sm font-bold text-gray-900 bg-gray-100 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-200 transition flex items-center gap-2">
+                            {expanded ? 'Hide playbook' : 'Open playbook'} <ChevronDown className={`w-4 h-4 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+                        </button>
+                    </div>
+
+                    {expanded && (
+                        <div className="mt-4 pt-4 border-t border-gray-100 space-y-4">
+                            <div>
+                                <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">Career paths</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {cert.careers.map((career, idx) => (
+                                        <span key={idx} className="text-xs font-semibold text-gray-800 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">{career}</span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">User insights</p>
+                                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    {cert.userInsights.map((insight, idx) => <li key={idx}>{insight}</li>)}
+                                </ul>
+                            </div>
+
+                            {cert.costBreakdown && (
+                                <div>
+                                    <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">Cost breakdown</p>
+                                    <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                        {cert.costBreakdown.map((item, idx) => <li key={idx}>{item}</li>)}
+                                    </ul>
+                                </div>
+                            )}
+
+                            <div>
+                                <p className="text-[11px] font-bold uppercase tracking-wide text-gray-500 mb-2">How to pass</p>
+                                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    {cert.howToPass.map((tip, idx) => <li key={idx}>{tip}</li>)}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+
+        const SpecializationCard = ({ spec, isActive, onSelect, expandedCerts, toggleCert }) => (
+            <div className={`rounded-xl border transition-all p-5 bg-white ${isActive ? 'shadow-md border-gray-900/10 ring-1 ring-gray-900/10' : 'border-white/70 hover:border-gray-200 hover:shadow-sm'}`}>
+                <div className="flex items-start justify-between gap-3">
+                    <div>
+                        <p className="text-[11px] uppercase tracking-wide font-bold text-gray-500 mb-1">Specialization</p>
+                        <h4 className="text-lg font-bold text-slate-900">{spec.name}</h4>
+                        <p className="text-sm text-slate-600 mt-2 leading-relaxed">{spec.overview}</p>
+                    </div>
+                    <button
+                        onClick={() => onSelect(spec.id)}
+                        className="text-xs font-bold text-gray-900 bg-gray-100 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-200 transition inline-flex items-center gap-2"
+                    >
+                        {isActive ? 'Hide roadmap' : 'View roadmap'}
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isActive ? 'rotate-180' : ''}`} />
+                    </button>
+                </div>
+
+                {isActive && (
+                    <div className="mt-6 space-y-4">
+                        <div className="flex items-center gap-2 text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                            <ArrowLeftRight className="w-4 h-4" /> Certification roadmap
+                        </div>
+                        <div className="space-y-5">
+                            {spec.certifications.map((cert, idx) => (
+                                <CertificationCard
+                                    key={cert.id}
+                                    cert={cert}
+                                    expanded={!!expandedCerts[cert.id]}
+                                    onToggle={() => toggleCert(cert.id)}
+                                    index={idx}
+                                    total={spec.certifications.length}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+
+        const CountrySpecializationsSection = ({ countryKey }) => {
+            const data = specializationsData[countryKey];
+            const [activeSpecId, setActiveSpecId] = useState(data?.specializations?.[0]?.id || null);
+            const [expandedCerts, setExpandedCerts] = useState({});
+
+            useEffect(() => {
+                setActiveSpecId(data?.specializations?.[0]?.id || null);
+                setExpandedCerts({});
+            }, [countryKey, data]);
+
+            if (!data || !data.specializations?.length) return null;
+
+            const toggleCert = (certId) => {
+                setExpandedCerts(prev => ({ ...prev, [certId]: !prev[certId] }));
+            };
+
+            return (
+                <div id="country-roadmaps" className="mt-14">
+                    <div className="bg-gray-50/80 border border-gray-200 rounded-2xl p-6 lg:p-8 shadow-inner">
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <p className="text-sm font-semibold uppercase tracking-wide text-gray-500">Specializations & Certification Roadmaps</p>
+                                <h3 className="text-2xl font-extrabold text-slate-900 mt-1">Explore HR tracks in {data.countryName}</h3>
+                                <p className="text-slate-600 text-sm mt-2">Explore HR specializations, certifications, costs, and career paths in this country.</p>
+                            </div>
+                            <div className="bg-white px-4 py-2 rounded-full border border-gray-200 text-xs font-bold text-gray-700 shadow-sm">Deep dive for {data.countryName}</div>
+                        </div>
+
+                        <div className="mt-8 space-y-4">
+                            {data.specializations.map((spec) => (
+                                <SpecializationCard
+                                    key={spec.id}
+                                    spec={spec}
+                                    isActive={activeSpecId === spec.id}
+                                    onSelect={(id) => setActiveSpecId(activeSpecId === id ? null : id)}
+                                    expandedCerts={expandedCerts}
+                                    toggleCert={toggleCert}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Main App ---
+        const App = () => {
+            const [showIntro, setShowIntro] = useState(true);
+            const [selectedCountry, setSelectedCountry] = useState('USA');
+            const [activeTab, setActiveTab] = useState('specializations'); // DEFAULT TAB IS NOW SPECIALIZATIONS
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const [compareCountry, setCompareCountry] = useState('UK');
+            const [expandedCard, setExpandedCard] = useState(null);
+            const [searchTerm, setSearchTerm] = useState("");
+            const [schoolRegionFilter, setSchoolRegionFilter] = useState("All");
+            const [brainsTab, setBrainsTab] = useState("economics"); // 'economics' or 'psychology'
+
+            const [myTimeline, setMyTimeline] = useState([]);
+            const [newStepName, setNewStepName] = useState("");
+            const [roadmapModal, setRoadmapModal] = useState(null);
+            const [examInsightModal, setExamInsightModal] = useState(null);
+
+            const countryData = certificationData[selectedCountry];
+            const comparisonData = certificationData[compareCountry];
+            const examExperience = examExperienceByCountry[selectedCountry];
+
+            const normalizeText = (text = "") => text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+
+            const openRoadmap = (certName) => {
+                const normalizedCert = normalizeText(certName);
+                const matches = specializationRoadmaps.filter((roadmap) =>
+                    roadmap.certs.some((certTag) => normalizedCert.includes(normalizeText(certTag)))
+                );
+                setRoadmapModal({ certName, roadmaps: matches.length ? matches : specializationRoadmaps });
+            };
+
+            const scrollToRoadmaps = () => {
+                const target = document.getElementById('country-roadmaps');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            };
+
+            const handleAddStep = (e) => {
+                e.preventDefault();
+                if(!newStepName) return;
+                setMyTimeline([...myTimeline, { id: Date.now(), name: newStepName, date: new Date().toISOString().split('T')[0] }]);
+                setNewStepName("");
+            };
+
+            useEffect(() => {
+                setExpandedCard(null);
+                setSearchTerm("");
+                setSchoolRegionFilter("All");
+                setBrainsTab("economics");
+            }, [activeTab, selectedCountry]);
+
+            const filteredSpecs = countryData.specializations ? countryData.specializations.filter(spec => 
+                spec.function.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                spec.group?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                spec.cert.toLowerCase().includes(searchTerm.toLowerCase())
+            ) : [];
+
+            const availableRegions = ["All", ...new Set(countryData.resources?.schools?.map(s => s.region) || [])];
+            
+            const filteredSchools = countryData.resources?.schools?.filter(s => 
+                schoolRegionFilter === "All" || s.region === schoolRegionFilter
+            ) || [];
+
+            if (showIntro) {
+                return <IntroScreen onComplete={() => setShowIntro(false)} />;
+            }
+
+            return (
+                <div className="min-h-screen flex flex-col font-sans text-gray-800 animate-fade-in">
+                    {/* Navbar */}
+                    <nav className="bg-white/80 backdrop-blur-md text-gray-800 sticky top-0 z-50 border-b border-white/40">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="flex items-center justify-between h-16">
+                                <div className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab('specializations')}>
+                                    <div className="bg-gradient-to-r from-slate-800 to-slate-900 p-1.5 rounded-lg shadow-md"><GlobeIcon className="h-6 w-6 text-white" /></div>
+                                    <span className="font-bold text-xl tracking-tight text-slate-900">GlobalHRCreds</span>
+                                </div>
+                                <div className="hidden md:block">
+                                    <div className="ml-10 flex items-baseline space-x-6">
+                                        {['specializations', 'timeline', 'resources', 'legal', 'compare', 'brains', 'books', 'community'].map(tab => (
+                                            <button 
+                                                key={tab}
+                                                onClick={() => setActiveTab(tab)} 
+                                                className={`px-3 py-2 rounded-lg text-sm font-semibold transition-all capitalize ${activeTab === tab ? 'bg-slate-100 text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'} flex items-center gap-1.5`}
+                                            >
+                                                {tab === 'brains' && <Lightbulb className="w-4 h-4" />}
+                                                {tab === 'books' && <Library className="w-4 h-4" />}
+                                                {tab === 'community' && <Users className="w-4 h-4" />}
+                                                {tab === 'resources' ? 'Top Schools' : tab === 'legal' ? 'Legal & Compliance' : tab === 'brains' ? 'Big Ideas' : tab === 'books' ? 'Bookshelf' : tab === 'community' ? 'Community' : tab}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="md:hidden">
+                                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-gray-500"><Menu className="w-6 h-6" /></button>
+                                </div>
+                            </div>
+                        </div>
+                        {mobileMenuOpen && (
+                            <div className="md:hidden bg-white border-t border-gray-100 px-2 py-2 space-y-1 shadow-lg">
+                                {['specializations', 'timeline', 'resources', 'legal', 'compare', 'brains', 'books', 'community'].map(tab => (
+                                    <button key={tab} onClick={() => {setActiveTab(tab); setMobileMenuOpen(false)}} className="block px-3 py-3 text-base font-medium text-gray-700 w-full text-left capitalize">{tab === 'resources' ? 'Top Schools' : tab === 'brains' ? 'Big Ideas' : tab === 'books' ? 'Bookshelf' : tab === 'community' ? 'Community' : tab}</button>
+                                ))}
+                            </div>
+                        )}
+                    </nav>
+
+                    {/* Hero */}
+                    <div className="brand-bg text-white pt-20 pb-32 px-4 relative overflow-hidden">
+                         <ParticleBackground isDark={true} />
+                        <div className="max-w-5xl mx-auto text-center relative z-10">
+                            <h1 className="text-5xl md:text-6xl font-extrabold mb-8 leading-tight tracking-tight">Build Your HR Career <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-200 to-gray-400">Anywhere in the World</span></h1>
+                            
+                            <div className="flex flex-wrap justify-center gap-3 mt-10">
+                                {Object.keys(certificationData).map((key) => (
+                                    <button key={key} onClick={() => setSelectedCountry(key)} className={`flex items-center gap-3 px-6 py-3 rounded-full text-sm font-bold transition-all transform hover:-translate-y-1 ${selectedCountry === key ? 'bg-white text-slate-900 shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-white/10 text-white hover:bg-white/20 border border-white/20 backdrop-blur-sm'}`}>
+                                        <span className="text-xl">{certificationData[key].flag}</span> {certificationData[key].name}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 mb-24 relative z-20">
+                        <div className="glass-panel rounded-2xl shadow-2xl overflow-hidden min-h-[600px] flex flex-col md:flex-row">
+                            {/* Sidebar (Desktop) */}
+                            <div className="md:w-64 bg-white/50 backdrop-blur-xl border-r border-white/60 p-6 hidden md:block">
+                                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6 px-3">Menu</h3>
+                                <div className="space-y-1">
+                                    {[
+                                        { id: 'specializations', icon: Briefcase, label: 'Specializations' },
+                                        { id: 'timeline', icon: Clock, label: 'Timeline Tracker' },
+                                        { id: 'resources', icon: GraduationCap, label: 'Top Schools' },
+                                        { id: 'legal', icon: Scale, label: 'Legal & Compliance' },
+                                        { id: 'compare', icon: ArrowLeftRight, label: 'Compare Markets' },
+                                        { id: 'brains', icon: Lightbulb, label: 'Big Ideas' },
+                                        { id: 'books', icon: Library, label: 'Bookshelf' },
+                                        { id: 'community', icon: Users, label: 'Community' }
+                                    ].map(item => (
+                                        <button key={item.id} onClick={() => setActiveTab(item.id)} className={`w-full text-left flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${activeTab === item.id ? 'bg-white shadow-md text-gray-900' : 'text-slate-600 hover:bg-white/60'}`}>
+                                            <item.icon className={`h-4 w-4 ${activeTab === item.id ? 'text-gray-900' : 'text-slate-400'}`} /> {item.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Content Area */}
+                            <div className="flex-1 p-8 md:p-12 bg-white/40">
+                                {/* Header */}
+                                <div className="flex items-center justify-between mb-8 pb-6 border-b border-slate-200/60">
+                                    <div>
+                                        <h2 className="text-3xl font-extrabold dashboard-title flex items-center gap-3"><span className="text-4xl drop-shadow-sm">{countryData.flag}</span> HR in {countryData.name}</h2>
+                                        <p className="text-slate-500 mt-2 text-sm font-medium">Managed by: <span className="font-bold text-slate-700">{countryData.authority}</span></p>
+                                    </div>
+                                </div>
+
+                                {/* Specializations Tab (NOW DEFAULT) */}
+                                {activeTab === 'specializations' && (
+                                    <div className="animate-fade-in">
+                                        <div className="text-center mb-10">
+                                            <h2 className="text-3xl font-extrabold text-slate-900 mb-3">Global HR Certifications Library</h2>
+                                            <p className="text-slate-600 max-w-2xl mx-auto">
+                                                Explore the best HR certifications around the world. Choose your category and country to find the credentials that match your career goals.
+                                            </p>
+                                        </div>
+
+                                        <div className="bg-white/70 border border-white/80 rounded-2xl p-4 mb-8 shadow-sm flex flex-wrap items-center gap-3 justify-between">
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center text-lg">🌎</div>
+                                                <div>
+                                                    <p className="text-sm font-semibold text-slate-800">Deep dive by country</p>
+                                                    <p className="text-xs text-slate-600">Jump straight to the specialization roadmaps for {countryData.name}.</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-wrap gap-2">
+                                                {Object.keys(certificationData).map((key) => (
+                                                    <button
+                                                        key={key}
+                                                        onClick={() => { setSelectedCountry(key); scrollToRoadmaps(); }}
+                                                        className={`px-3 py-2 text-xs font-bold rounded-lg border ${selectedCountry === key ? 'bg-gray-900 text-white border-gray-900' : 'bg-white text-gray-800 border-gray-200 hover:bg-gray-50'}`}
+                                                    >
+                                                        {certificationData[key].flag} {certificationData[key].name}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-12">
+                                            <div className="bg-gray-900 text-white rounded-xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-lg">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-2xl">🧭</div>
+                                                    <div>
+                                                        <h3 className="text-xl font-bold">Career roadmaps on demand</h3>
+                                                        <p className="text-sm text-gray-200">Tap the "Roadmap" button on any certification below to open the step-by-step path for that track.</p>
+                                                    </div>
+                                                </div>
+                                                <p className="text-xs uppercase tracking-wide font-semibold bg-white text-gray-900 px-4 py-2 rounded-full inline-flex items-center gap-2 shadow-sm">
+                                                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                    Lean view enabled
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-12">
+                                            {globalCerts.map((category, cIdx) => {
+                                                const currentCountryName = selectedCountry === 'USA' ? 'US' : selectedCountry;
+                                                const filteredRegions = category.regions.filter(r => r.country === currentCountryName || r.country === 'Global');
+
+                                                if (filteredRegions.length === 0) return null;
+
+                                                return (
+                                                    <div key={cIdx}>
+                                                        <h3 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">{category.title}</h3>
+                                                        <div className="grid gap-6">
+                                                            {filteredRegions.map((region, rIdx) => (
+                                                                <div key={rIdx} className="bg-white/60 rounded-xl p-6 border border-white/60 shadow-sm">
+                                                                    <h4 className="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                                                                        <span className="text-2xl">{region.flag}</span> {region.country}
+                                                                    </h4>
+                                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                                        {region.certs.map((cert, ctIdx) => (
+                                                                            <TiltCard key={ctIdx} className="glass-card p-5 rounded-lg">
+                                                                                <h5 className="font-bold text-slate-800">{cert.name}</h5>
+                                                                                <p className="text-sm text-slate-600 mb-4 mt-1">{cert.desc}</p>
+                                                                                <div className="flex flex-wrap gap-2">
+                                                                                    <button onClick={() => openRoadmap(cert.name)} className="text-white text-xs font-bold bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-800 transition flex items-center gap-2">
+                                                                                        <MapPin className="w-4 h-4" /> Roadmap
+                                                                                    </button>
+                                                                                    <button className="text-gray-900 text-xs font-bold bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200 transition">Learn More</button>
+                                                                                </div>
+                                                                            </TiltCard>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+
+                                        {examExperience && (
+                                            <div className="mt-14">
+                                                <div className="flex items-start gap-4 mb-6">
+                                                    <div className="w-12 h-12 rounded-2xl bg-gray-900 text-white flex items-center justify-center text-2xl shadow-lg">🧪</div>
+                                                    <div>
+                                                        <h3 className="text-2xl font-extrabold text-slate-900">Test-taker insight launcher</h3>
+                                                        <p className="text-slate-600 text-sm mt-2 max-w-3xl">{examExperience.intro}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="grid gap-6 md:grid-cols-2">
+                                                    {examExperience.exams.map((exam, idx) => (
+                                                        <TiltCard key={idx} className="glass-card rounded-xl p-6 border border-white/60 shadow-sm flex flex-col gap-5">
+                                                            <div className="flex items-start justify-between gap-3">
+                                                                <div>
+                                                                    <h4 className="text-lg font-bold text-slate-900 leading-tight">{exam.name}</h4>
+                                                                    <p className="text-sm text-slate-600 mt-2 leading-relaxed">{exam.feel}</p>
+                                                                </div>
+                                                                <span className="text-[11px] font-semibold uppercase tracking-wide bg-gray-100 text-gray-700 px-3 py-1 rounded-full border border-gray-200">Insights</span>
+                                                            </div>
+                                                            <button
+                                                                onClick={() => setExamInsightModal({ ...exam, country: countryData.name })}
+                                                                className="text-white text-xs font-bold bg-gray-900 px-4 py-2 rounded-lg hover:bg-gray-800 transition inline-flex items-center gap-2"
+                                                            >
+                                                                <Headphones className="w-4 h-4" /> View user insight
+                                                            </button>
+                                                        </TiltCard>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <CountrySpecializationsSection key={selectedCountry} countryKey={selectedCountry} />
+                                    </div>
+                                )}
+
+                                {/* Resources Tab */}
+                                {activeTab === 'resources' && (
+                                    <div className="animate-fade-in space-y-8">
+                                        <div className="bg-gray-100 border-l-4 border-gray-800 p-6 rounded-r-xl shadow-sm">
+                                            <h3 className="text-xl font-bold text-gray-900 mb-2">Education First</h3>
+                                            <p className="text-gray-700 text-sm leading-relaxed">
+                                                Before diving into certifications, the first step to becoming a great HR professional is a solid academic foundation. 
+                                                Explore the top universities and colleges in {countryData.name} that offer specialized HR degrees and diplomas.
+                                            </p>
+                                        </div>
+
+                                        <div className="space-y-8">
+                                            {countryData.resources?.sections?.map((section, sIdx) => (
+                                                <div key={sIdx}>
+                                                    <h3 className="text-lg font-bold text-slate-800 mb-4 border-b border-slate-200 pb-2 flex items-center gap-2">
+                                                        <span className="bg-gray-200 text-gray-800 text-xs px-2 py-1 rounded uppercase tracking-wide font-bold">{section.category}</span>
+                                                    </h3>
+                                                    <div className="grid gap-4 sm:grid-cols-2">
+                                                        {section.schools.map((school, idx) => (
+                                                            <TiltCard key={idx} className="glass-card rounded-xl p-6">
+                                                                <h4 className="font-bold text-slate-900 text-lg mb-3">{school.name}</h4>
+                                                                <div className="space-y-2">
+                                                                    {school.programs.map((prog, pIdx) => (
+                                                                        <div key={pIdx} className="flex items-start gap-2">
+                                                                            <div className="mt-2 w-1.5 h-1.5 rounded-full bg-gray-500 flex-shrink-0"></div>
+                                                                            <p className="text-sm text-slate-600 leading-snug">{prog}</p>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </TiltCard>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Legal & Compliance Tab */}
+                                {activeTab === 'legal' && (
+                                    <div className="animate-fade-in space-y-8">
+                                        <div className="glass-card p-8 rounded-2xl">
+                                            <h3 className="text-2xl font-bold text-slate-900 mb-4 flex items-center gap-3">
+                                                <Scale className="h-7 w-7 text-slate-700" /> Legal Framework in {countryData.name}
+                                            </h3>
+                                            <p className="text-slate-600 text-base leading-relaxed mb-8">{countryData.compliance?.intro}</p>
+                                            
+                                            <div className="space-y-10">
+                                                {countryData.compliance?.sections?.map((section, sIdx) => (
+                                                    <div key={sIdx}>
+                                                        <h4 className="text-lg font-bold text-gray-900 mb-5 pb-2 border-b border-gray-200">{section.title}</h4>
+                                                        <div className="grid gap-4 sm:grid-cols-2">
+                                                            {section.items.map((item, iIdx) => (
+                                                                <TiltCard key={iIdx} className="bg-white/60 p-5 rounded-xl border border-white/60 shadow-sm">
+                                                                    <div className="flex justify-between items-start mb-2">
+                                                                        <h5 className="font-bold text-slate-800 text-sm">{item.name}</h5>
+                                                                        <FileText className="h-4 w-4 text-slate-400" />
+                                                                    </div>
+                                                                    <p className="text-xs text-slate-500 leading-relaxed">{item.desc}</p>
+                                                                </TiltCard>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {/* Brains / Big Ideas Tab */}
+                                {activeTab === 'brains' && (
+                                    <div className="animate-fade-in">
+                                        <div className="text-center mb-12">
+                                            <h2 className="text-3xl font-extrabold text-slate-900 mb-4">Brains Behind HR</h2>
+                                            <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+                                                HR isn’t just forms and policies. Behind every decision, there are powerful ideas from economics and psychology.
+                                            </p>
+                                        </div>
+
+                                        <div className="flex justify-center mb-10 gap-4">
+                                            <button 
+                                                onClick={() => setBrainsTab("economics")}
+                                                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${brainsTab === "economics" ? "bg-gray-900 text-white shadow-lg ring-2 ring-gray-900 ring-offset-2" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"}`}
+                                            >
+                                                Economic Ideas Shaping HR
+                                            </button>
+                                            <button 
+                                                onClick={() => setBrainsTab("psychology")}
+                                                className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${brainsTab === "psychology" ? "bg-gray-700 text-white shadow-lg ring-2 ring-gray-700 ring-offset-2" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"}`}
+                                            >
+                                                Psychology Ideas for People & Culture
+                                            </button>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            {brainsData[brainsTab].map((item, idx) => (
+                                                <TiltCard key={idx} className="glass-card rounded-2xl p-6 group">
+                                                    <div className="text-4xl mb-4 bg-white w-14 h-14 flex items-center justify-center rounded-2xl shadow-sm group-hover:scale-110 transition-transform duration-300">{item.icon}</div>
+                                                    <h3 className="text-lg font-bold text-slate-900 mb-1">{item.title}</h3>
+                                                    <p className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-4">{item.label}</p>
+                                                    <p className="text-sm text-slate-600 mb-5 italic bg-slate-50 p-3 rounded-lg border border-slate-100">"{item.oneLine}"</p>
+                                                    <div className="pt-4 border-t border-slate-100">
+                                                        <p className="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-widest">In HR, this means:</p>
+                                                        <p className="text-sm text-slate-700 leading-relaxed">{item.hrMeaning}</p>
+                                                    </div>
+                                                </TiltCard>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Bookshelf Tab */}
+                                {activeTab === 'books' && (
+                                    <div className="animate-fade-in">
+                                        <div className="text-center mb-12">
+                                            <h2 className="text-3xl font-extrabold text-slate-900 mb-4">Foundational HR Books</h2>
+                                            <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+                                                A curated bookshelf for HR students and professionals. Start with the basics, grow into strategy, and one day sit at the CHRO table.
+                                            </p>
+                                            <p className="text-sm text-gray-600 mt-4 font-medium bg-gray-100 inline-block px-4 py-2 rounded-full">📚 Start anywhere. Each book nudges you one step closer to CHRO.</p>
+                                        </div>
+
+                                        <div className="space-y-14">
+                                            {booksData.categories.map((cat, cIdx) => (
+                                                <div key={cIdx}>
+                                                    <h3 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2">{cat.title}</h3>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                        {cat.books.map((book, bIdx) => (
+                                                            <TiltCard key={bIdx} className="glass-card rounded-xl group flex flex-col h-full">
+                                                                <div className="p-6 flex-1">
+                                                                    <h4 className="font-bold text-slate-900 text-lg mb-1">{book.title}</h4>
+                                                                    <p className="text-sm text-slate-500 italic mb-5">by {book.author}</p>
+                                                                    
+                                                                    <div className="mb-6">
+                                                                        <p className="text-[10px] font-bold text-slate-400 uppercase mb-1 tracking-wide">What it's about:</p>
+                                                                        <p className="text-sm text-slate-700 leading-relaxed">{book.about}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="bg-gray-50/50 p-5 border-t border-gray-100/50 rounded-b-xl mt-auto">
+                                                                    <p className="text-[10px] font-bold text-gray-600 uppercase mb-1 flex items-center gap-1">
+                                                                        <span className="text-base">💡</span> Why read it:
+                                                                    </p>
+                                                                    <p className="text-sm text-gray-900 leading-snug">{book.why}</p>
+                                                                </div>
+                                                            </TiltCard>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Community Tab */}
+                                {activeTab === 'community' && (
+                                    <div className="animate-fade-in">
+                                        <div className="text-center mb-12">
+                                            <h2 className="text-3xl font-extrabold text-slate-900 mb-4">HR Associations & Communities</h2>
+                                            <p className="text-slate-600 max-w-2xl mx-auto text-lg">
+                                                Join the best HR organizations around the world. Build your network, learn from experts, attend events, and grow your HR career.
+                                            </p>
+                                            <p className="text-sm text-gray-600 mt-4 font-medium">Find your HR tribe.</p>
+                                        </div>
+
+                                        <div className="space-y-12">
+                                            {/* Global Section */}
+                                            <div>
+                                                <h3 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2 flex items-center gap-2">
+                                                    <span className="text-2xl">🌐</span> Global HR Associations
+                                                </h3>
+                                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                    {associationsData.global.map((assoc, idx) => (
+                                                        <TiltCard key={idx} className="glass-card rounded-xl p-6 border-l-4 border-l-gray-800">
+                                                            <div className="flex justify-between items-start mb-3">
+                                                                <h4 className="font-bold text-slate-900 text-lg">{assoc.name}</h4>
+                                                                <div className="flex gap-1">
+                                                                    {assoc.tags.map((tag, tIdx) => (
+                                                                        <span key={tIdx} className="text-[10px] bg-gray-100 text-gray-800 px-2 py-1 rounded-full font-medium uppercase tracking-wide border border-gray-200">{tag}</span>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                            <p className="text-xs text-slate-500 font-medium mb-3 uppercase tracking-wide">{assoc.fullName}</p>
+                                                            <p className="text-sm text-slate-600 mb-6 leading-relaxed">{assoc.desc}</p>
+                                                            <button className="text-gray-900 font-bold text-sm hover:underline flex items-center gap-1 group">
+                                                                Visit Website <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                                                            </button>
+                                                        </TiltCard>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Filtered Regional Section */}
+                                            {[
+                                                { key: 'canada', title: 'Canada – HR & Payroll', icon: '🇨🇦', country: 'Canada' },
+                                                { key: 'usa', title: 'United States – HR Networks', icon: '🇺🇸', country: 'USA' },
+                                                { key: 'uk', title: 'United Kingdom – HR & Payroll', icon: '🇬🇧', country: 'UK' },
+                                                { key: 'australia', title: 'Australia – HR Communities', icon: '🇦🇺', country: 'Australia' },
+                                                { key: 'india', title: 'India – HR, HRD & L&D', icon: '🇮🇳', country: 'India' },
+                                                { key: 'dubai', title: 'Dubai / UAE – HR Communities', icon: '🇦🇪', country: 'Dubai' }
+                                            ]
+                                            .filter(region => region.country === selectedCountry) // Only show selected country
+                                            .map((region) => (
+                                                <div key={region.key}>
+                                                    <h3 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-200 pb-2 flex items-center gap-2">
+                                                        <span className="text-2xl">{region.icon}</span> {region.title}
+                                                    </h3>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                                        {associationsData[region.key].map((assoc, idx) => (
+                                                            <TiltCard key={idx} className="glass-card rounded-xl p-6">
+                                                                <div className="flex justify-between items-start mb-3">
+                                                                    <h4 className="font-bold text-slate-900 text-lg">{assoc.name}</h4>
+                                                                    <div className="flex gap-1 flex-wrap justify-end">
+                                                                        {assoc.tags.map((tag, tIdx) => (
+                                                                            <span key={tIdx} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded-full font-medium border border-slate-200">{tag}</span>
+                                                                        ))}
+                                                                    </div>
+                                                                </div>
+                                                                <p className="text-xs text-slate-500 font-medium mb-3 uppercase tracking-wide">{assoc.fullName}</p>
+                                                                <p className="text-sm text-slate-600 mb-6 leading-relaxed">{assoc.desc}</p>
+                                                                <button className="text-gray-900 font-bold text-sm hover:underline flex items-center gap-1 group">
+                                                                    Visit Website <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                                                                </button>
+                                                            </TiltCard>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Timeline Tab */}
+                                {activeTab === 'timeline' && (
+                                    <div className="animate-fade-in">
+                                        <div className="glass-card p-8 rounded-2xl">
+                                            <h3 className="font-bold text-slate-900 mb-6 text-xl">My Journey</h3>
+                                            <form onSubmit={handleAddStep} className="flex gap-3 mb-8">
+                                                <input type="text" placeholder="Add a milestone (e.g. Passed SHRM-CP)..." className="flex-1 p-3 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-500 outline-none bg-white/80" value={newStepName} onChange={(e) => setNewStepName(e.target.value)} />
+                                                <button type="submit" className="bg-gray-900 text-white px-6 py-3 rounded-lg text-sm font-bold hover:bg-black transition">Add</button>
+                                            </form>
+                                            <div className="space-y-4 relative pl-8 border-l-2 border-slate-200 ml-4">
+                                                {myTimeline.length === 0 && <p className="text-sm text-slate-400 italic pl-2">Start planning your certification path above.</p>}
+                                                {myTimeline.map(t => (
+                                                    <div key={t.id} className="bg-white/80 p-4 rounded-xl border border-white shadow-sm relative">
+                                                        <div className="absolute -left-[41px] top-5 w-4 h-4 rounded-full bg-gray-900 border-4 border-white shadow-sm"></div>
+                                                        <p className="font-bold text-sm text-slate-800">{t.name}</p>
+                                                        <p className="text-xs text-slate-500 mt-1">{t.date}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Compare Tab */}
+                                {activeTab === 'compare' && (
+                                    <div className="animate-fade-in">
+                                        <div className="glass-card p-8 rounded-2xl">
+                                            <div className="flex justify-between items-center mb-8">
+                                                <h3 className="font-bold text-xl text-slate-900">Comparing {countryData.name} vs.</h3>
+                                                <select className="bg-white/80 border border-slate-200 rounded-lg p-2.5 font-bold text-sm focus:ring-2 focus:ring-gray-500 outline-none" value={compareCountry} onChange={(e) => setCompareCountry(e.target.value)}>
+                                                    {Object.keys(certificationData).filter(k => k !== selectedCountry).map(k => <option key={k} value={k}>{certificationData[k].name}</option>)}
+                                                </select>
+                                            </div>
+                                            <div className="grid grid-cols-2 border border-slate-200 rounded-xl overflow-hidden">
+                                                <div className="p-6 bg-gray-50/80 border-b border-r border-slate-200 font-bold text-center text-lg">{countryData.name}</div>
+                                                <div className="p-6 bg-gray-50/80 border-b border-slate-200 font-bold text-center text-lg">{comparisonData.name}</div>
+                                                <div className="p-6 border-b border-r border-slate-200 text-center bg-white/60">
+                                                    <span className="block text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">Avg Salary</span>
+                                                    <span className="text-xl font-bold text-slate-800">{countryData.avgSalary}</span>
+                                                </div>
+                                                <div className="p-6 border-b border-slate-200 text-center bg-white/60">
+                                                    <span className="block text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">Avg Salary</span>
+                                                    <span className="text-xl font-bold text-slate-800">{comparisonData.avgSalary}</span>
+                                                </div>
+                                                <div className="p-6 border-r border-slate-200 text-center bg-white/60">
+                                                    <span className="block text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">Legal System</span>
+                                                    <span className="text-sm font-medium text-slate-700">{countryData.legalSystem}</span>
+                                                </div>
+                                                <div className="p-6 text-center bg-white/60">
+                                                    <span className="block text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">Legal System</span>
+                                                    <span className="text-sm font-medium text-slate-700">{comparisonData.legalSystem}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Modal Overlays */}
+                                {roadmapModal && (
+                                    <Modal
+                                        title={`${roadmapModal.certName} career roadmap`}
+                                        onClose={() => setRoadmapModal(null)}
+                                    >
+                                        <p className="text-sm text-slate-600 mb-4">We matched this certification to the most relevant roadmaps. Follow the steps to plan your path.</p>
+                                        <div className="space-y-5">
+                                            {roadmapModal.roadmaps.map((roadmap, idx) => (
+                                                <div key={idx} className="border border-slate-200 rounded-xl p-5 bg-gray-50/60">
+                                                    <div className="flex items-start justify-between gap-3 mb-3">
+                                                        <div>
+                                                            <h4 className="text-lg font-bold text-slate-900 leading-tight">{roadmap.title}</h4>
+                                                            <p className="text-sm text-slate-600">{roadmap.summary}</p>
+                                                        </div>
+                                                        <span className="text-[11px] font-semibold uppercase tracking-wide bg-gray-900 text-white px-3 py-1 rounded-full">Roadmap</span>
+                                                    </div>
+                                                    <ol className="space-y-3 text-sm text-slate-700 mb-3">
+                                                        {roadmap.steps.map((step, sIdx) => (
+                                                            <li key={sIdx} className="flex gap-3">
+                                                                <div className="mt-1 w-2 h-2 rounded-full bg-gray-900 flex-shrink-0"></div>
+                                                                <div>
+                                                                    <p className="font-semibold text-slate-900">{step.stage}</p>
+                                                                    <p className="leading-snug">{step.detail}</p>
+                                                                </div>
+                                                            </li>
+                                                        ))}
+                                                    </ol>
+                                                    <div className="flex flex-wrap gap-2 pt-1">
+                                                        {roadmap.certs.map((cert, cIdx) => (
+                                                            <span key={cIdx} className="text-[11px] font-semibold bg-white text-gray-800 px-3 py-1 rounded-full border border-gray-200">{cert}</span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </Modal>
+                                )}
+
+                                {examInsightModal && (
+                                    <Modal
+                                        title={`${examInsightModal.name} – user insight`}
+                                        onClose={() => setExamInsightModal(null)}
+                                    >
+                                        <div className="space-y-4">
+                                            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                                <p className="text-xs font-semibold uppercase text-gray-500 mb-2">What it feels like</p>
+                                                <p className="text-sm text-slate-700 leading-relaxed">{examInsightModal.feel}</p>
+                                            </div>
+                                            <div className="bg-white border border-gray-200 rounded-xl p-4">
+                                                <p className="text-xs font-semibold uppercase text-gray-500 mb-3">How people pass</p>
+                                                <ul className="space-y-2 text-sm text-slate-700 list-disc list-inside">
+                                                    {examInsightModal.tips.map((tip, idx) => (
+                                                        <li key={idx}>{tip}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                            <div className="text-xs text-gray-500">Country: {examInsightModal.country}</div>
+                                        </div>
+                                    </Modal>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
