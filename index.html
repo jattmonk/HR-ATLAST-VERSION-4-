@@ -1350,6 +1350,13 @@
                 }
             };
 
+            const scrollToSteps = () => {
+                const target = document.getElementById('country-steps');
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            };
+
             useEffect(() => {
                 setExpandedCard(null);
                 setSearchTerm("");
