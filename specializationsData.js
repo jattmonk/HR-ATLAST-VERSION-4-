@@ -526,5 +526,7 @@ const COUNTRY_SPECIALIZATIONS = {
   }
 };
 
-// Expose globally for the inline Babel app
-window.COUNTRY_SPECIALIZATIONS = COUNTRY_SPECIALIZATIONS;
+// Expose globally so the inline React app can safely read the data
+if (typeof window !== "undefined") {
+  window.COUNTRY_SPECIALIZATIONS = COUNTRY_SPECIALIZATIONS;
+}
